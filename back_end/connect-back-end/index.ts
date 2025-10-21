@@ -1,5 +1,9 @@
+import getDatabaseClient from "./database/getDatabaseClient";
+import startServer from "./server/startServer";
+
 function main() {
-  console.log("hello world");
+  const databaseClient = getDatabaseClient();
+  startServer(databaseClient);
 }
 
 main();
