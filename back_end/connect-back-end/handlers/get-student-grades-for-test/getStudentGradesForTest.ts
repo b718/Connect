@@ -57,17 +57,17 @@ export default function getStudentGradesForTest(databaseClient: PrismaClient) {
         studentGradesForTest,
         res
       );
-      logger.info(
-        "successfully queried student grades for specific testId, testId: " +
-          testId
-      );
+      logger.info({
+        testId: testId,
+        message: "successfully queried student grades for specific testId",
+      });
     } catch (error) {
-      logger.info(
-        "unsuccessfully queried student grades for specific testId, testId: " +
-          testId +
-          "error: " +
-          error
-      );
+      logger.error({
+        testId: testId,
+        message: "unsuccessfully queried student grades for specific testId",
+        error: error,
+      });
+
       createGetStudentGradesForTestResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "unsuccessfully queried student grades for specific test",
