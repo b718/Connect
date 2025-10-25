@@ -87,8 +87,8 @@ async function seedDatabase(databaseClient: PrismaClient) {
     const sampleStudentOneTestResult =
       await databaseClient.studentTestResults.create({
         data: {
-          testsTestId: sampleTest.testId,
-          studentsStudentId: sampleStudentOne.studentId,
+          testsTableId: sampleTest.testId,
+          studentsTableId: sampleStudentOne.studentId,
           testGrade: 95,
         },
       });
@@ -96,8 +96,8 @@ async function seedDatabase(databaseClient: PrismaClient) {
     const sampleStudentTwoTestResult =
       await databaseClient.studentTestResults.create({
         data: {
-          testsTestId: sampleTest.testId,
-          studentsStudentId: sampleStudentTwo.studentId,
+          testsTableId: sampleTest.testId,
+          studentsTableId: sampleStudentTwo.studentId,
           testGrade: 93,
         },
       });
