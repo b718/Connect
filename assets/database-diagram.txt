@@ -1,0 +1,45 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table teachers {
+  teacher_id uuid [primary key]
+  name string
+  created_at timestamp
+}
+
+Table students {
+  student_id uuid [primary key]
+  name string
+  created_at timestamp
+}
+
+Table teacher_enrollment {
+  teacher_id uuid [ref: > teachers.teacher_id]
+  class_id uuid [ref: > classes.class_id]
+}
+
+Table student_enrollment {
+  student_id uuid [ref: > students.student_id]
+  class_id uuid [ref: > classes.class_id]
+}
+
+Table classes {
+  class_id uuid [primary key]
+  course_name string
+  created_at timestamp
+}
+
+Table tests {
+  test_id uuid [primary key]
+  test_name string
+  class_id uuid [ref: > classes.class_id]
+  created_at timestamp
+}
+
+Table student_test_results {
+  student_test_result_id uuid [primary key]
+  test_id uuid [ref: > tests.test_id]
+  student_id uuid [ref: > students.student_id]
+  test_grade integer
+  created_at timestamp
+}

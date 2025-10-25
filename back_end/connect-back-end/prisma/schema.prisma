@@ -13,3 +13,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// General Tables
+model Teachers {
+  teacherId String @id @default(uuid())
+  firstName String
+  lastName  String
+
+  classes Classes[]
+
+  createdAt DateTime @default(now())
+}
+
+model Students {
+  studentId String @id @default(uuid())
+  firstName String
+  lastName  String
+
+  classes            Classes[]
+  StudentTestResults StudentTestResults[]
+
+  createdAt DateTime @default(now())
+}
+
+model Classes {
+  classId          String @id @default(uuid())
+  courseName       String
+  studentGradeYear Int
+
+  students Students[]
+  teachers Teachers[]
+  tests    Tests[]
+
+  createdAt DateTime @default(now())
+}
+
+model Tests {
+  testId   String @id @default(uuid())
+  testName String
+
+  classesTableId String
+  Classes        Classes @relation(fields: [classesTableId], references: [classId])
+
+  StudentTestResults StudentTestResults[]
+
+  createdAt DateTime @default(now())
+}
+
+model StudentTestResults {
+  studentTestResultId String @id @default(uuid())
+
+  testsTestId String
+  test        Tests  @relation(fields: [testsTestId], references: [testId])
+
+  studentsStudentId String
+  student           Students @relation(fields: [studentsStudentId], references: [studentId])
+
+  testGrade Int
+
+  createdAt DateTime @default(now())
+}
