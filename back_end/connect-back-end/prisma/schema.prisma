@@ -31,7 +31,7 @@ model Students {
   lastName  String
 
   classes            Classes[]
-  StudentTestResults StudentTestResults[]
+  studentTestResults StudentTestResults[]
 
   createdAt DateTime @default(now())
 }
@@ -53,9 +53,9 @@ model Tests {
   testName String
 
   classesTableId String
-  Classes        Classes @relation(fields: [classesTableId], references: [classId])
+  classes        Classes @relation(fields: [classesTableId], references: [classId])
 
-  StudentTestResults StudentTestResults[]
+  studentTestResults StudentTestResults[]
 
   createdAt DateTime @default(now())
 }
@@ -63,11 +63,11 @@ model Tests {
 model StudentTestResults {
   studentTestResultId String @id @default(uuid())
 
-  testsTestId String
-  test        Tests  @relation(fields: [testsTestId], references: [testId])
+  testsTableId String
+  test         Tests  @relation(fields: [testsTableId], references: [testId])
 
-  studentsStudentId String
-  student           Students @relation(fields: [studentsStudentId], references: [studentId])
+  studentsTableId String
+  student         Students @relation(fields: [studentsTableId], references: [studentId])
 
   testGrade Int
 
