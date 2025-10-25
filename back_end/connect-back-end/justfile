@@ -1,0 +1,17 @@
+mod docker './justfiles/docker.just'
+mod prisma './justfiles/prisma.just'
+
+default:
+    @just --list
+
+# Run migrations for new database tables
+migrate:
+    @just prisma run-migrations
+
+# Set-up local instance of Postgres
+set-up-local-dev:
+    @just docker set-up-postgres
+    @sleep 1
+    @just migrate
+    @tsx "./seed/seedDatabase.ts"
+    @npm run dev
