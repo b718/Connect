@@ -3,6 +3,7 @@ import pino from "pino";
 import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import getStudentGradesForTest from "../handlers/get-student-grades-for-test/getStudentGradesForTest";
 
 export default async function startServer(databaseClient: PrismaClient) {
   const logger = pino({
@@ -13,6 +14,8 @@ export default async function startServer(databaseClient: PrismaClient) {
   app.use(cors());
 
   const SERVER_PORT = process.env.SERVER_PORT || 3003;
+
+  app.get("/grades/tests/:testId", getStudentGradesForTest(databaseClient));
 
   app.listen(SERVER_PORT, () => {
     logger.info(`starting server at port: ${SERVER_PORT}`);
