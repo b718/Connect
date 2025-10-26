@@ -75,12 +75,10 @@ async function getAllStudentGradesForClassQuery(
     });
 
   return allStudentGradesForClass.map((value) => {
-    const testGrade = value.testGrade;
-
     return {
       ...value.student,
       ...value.test,
-      testGrade,
+      testGrade: value.testGrade,
     };
   });
 }
