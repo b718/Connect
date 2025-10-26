@@ -23,9 +23,14 @@ const sampleClass = {
   studentGradeYear: 12,
 };
 
-const sampleTests = {
-  testName: "Polynomial Functions Test",
-};
+const sampleTests = [
+  {
+    testName: "Polynomial Functions Test",
+  },
+  {
+    testName: "Factorization Test",
+  },
+];
 
 async function seedDatabase(databaseClient: PrismaClient) {
   const logger = pino({
@@ -75,31 +80,56 @@ async function seedDatabase(databaseClient: PrismaClient) {
     });
 
     // Now we can create a sample test
-    const sampleTest = await databaseClient.tests.create({
+    const sampleTestOne = await databaseClient.tests.create({
       data: {
-        testName: sampleTests.testName,
+        testName: sampleTests[0].testName,
 
         classesTableId: sampleClassOne.classId,
       },
     });
 
+    const sampleTestTwo = await databaseClient.tests.create({
+      data: {
+        testName: sampleTests[1].testName,
+
+        classesTableId: sampleClassOne.classId,
+      },
+    });
+
+    console.log(sampleTestOne);
+    console.log(sampleTestTwo);
+
     // Now we can create the test results
     const sampleStudentOneTestResult =
-      await databaseClient.studentTestResults.create({
-        data: {
-          testsTableId: sampleTest.testId,
-          studentsTableId: sampleStudentOne.studentId,
-          testGrade: 95,
-        },
+      await databaseClient.studentTestResults.createMany({
+        data: [
+          {
+            testsTableId: sampleTestOne.testId,
+            studentsTableId: sampleStudentOne.studentId,
+            testGrade: 95,
+          },
+          {
+            testsTableId: sampleTestTwo.testId,
+            studentsTableId: sampleStudentOne.studentId,
+            testGrade: 69,
+          },
+        ],
       });
 
     const sampleStudentTwoTestResult =
-      await databaseClient.studentTestResults.create({
-        data: {
-          testsTableId: sampleTest.testId,
-          studentsTableId: sampleStudentTwo.studentId,
-          testGrade: 93,
-        },
+      await databaseClient.studentTestResults.createMany({
+        data: [
+          {
+            testsTableId: sampleTestOne.testId,
+            studentsTableId: sampleStudentTwo.studentId,
+            testGrade: 93,
+          },
+          {
+            testsTableId: sampleTestTwo.testId,
+            studentsTableId: sampleStudentTwo.studentId,
+            testGrade: 95,
+          },
+        ],
       });
 
     logger.info("successfully inserted seed data");
