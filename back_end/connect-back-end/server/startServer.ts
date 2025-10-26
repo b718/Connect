@@ -1,10 +1,11 @@
 import type { Express } from "express";
+import { PrismaClient } from "@prisma/client";
 import pino from "pino";
 import express from "express";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
 import getStudentGradesForTest from "../handlers/get-student-grades-for-test/getStudentGradesForTest";
 import getAllStudentGradesForClass from "../handlers/get-all-student-grades-for-class/getAllStudentGradesForClass";
+import getClassInformation from "../handlers/get-class-information/getClassInformation";
 
 export default async function startServer(databaseClient: PrismaClient) {
   const logger = pino({
@@ -16,11 +17,15 @@ export default async function startServer(databaseClient: PrismaClient) {
 
   const SERVER_PORT = process.env.SERVER_PORT || 3003;
 
+  app.get("/class/:classId", getClassInformation(databaseClient));
   app.get(
-    "/grades/class/:classId",
+    "/class/:classId/grades",
     getAllStudentGradesForClass(databaseClient)
   );
-  app.get("/grades/tests/:testId", getStudentGradesForTest(databaseClient));
+  app.get(
+    "/class/:classId/grades/tests/:testId",
+    getStudentGradesForTest(databaseClient)
+  );
 
   app.listen(SERVER_PORT, () => {
     logger.info(`starting server at port: ${SERVER_PORT}`);
