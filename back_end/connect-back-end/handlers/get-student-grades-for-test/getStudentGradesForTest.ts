@@ -21,14 +21,14 @@ function createGetStudentGradesForTestResponse(
     data,
   };
 
-  res.send(response);
+  res.status(statusCode).json(response);
 }
 
 async function getStudentGradesForTestQuery(
   databaseClient: PrismaClient,
   testId: string
 ) {
-  const studentGradesForTest = await databaseClient.tests.findMany({
+  const studentGradesForTest = await databaseClient.tests.findUnique({
     where: {
       testId: testId,
     },
@@ -37,13 +37,22 @@ async function getStudentGradesForTestQuery(
     },
   });
 
-  return studentGradesForTest;
+  if (!studentGradesForTest) {
+    return [];
+  }
+
+  return [studentGradesForTest];
 }
 export default function getStudentGradesForTest(databaseClient: PrismaClient) {
+  const successMessage =
+    "successfully queried student grades for specific test";
+  const errorMessage =
+    "unsuccessfully queried student grades for specific testId";
+  const logger = pino({
+    name: "handlers/get-student-grades-for-test/getStudentGradesForTest.ts",
+  });
+
   return async function (req: Request, res: Response) {
-    const logger = pino({
-      name: "handlers/get-student-grades-for-test/getStudentGradesForTest.ts",
-    });
     const testId = req.params.testId;
 
     try {
@@ -53,24 +62,24 @@ export default function getStudentGradesForTest(databaseClient: PrismaClient) {
       );
       createGetStudentGradesForTestResponse(
         StatusCodes.OK,
-        "successfully queried student grades for specific test",
+        successMessage,
         studentGradesForTest,
         res
       );
       logger.info({
         testId: testId,
-        message: "successfully queried student grades for specific testId",
+        message: successMessage,
       });
     } catch (error) {
       logger.error({
         testId: testId,
-        message: "unsuccessfully queried student grades for specific testId",
+        message: errorMessage,
         error: error,
       });
 
       createGetStudentGradesForTestResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "unsuccessfully queried student grades for specific test",
+        errorMessage,
         [],
         res
       );
