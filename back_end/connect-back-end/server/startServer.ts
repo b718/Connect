@@ -17,13 +17,13 @@ export default async function startServer(databaseClient: PrismaClient) {
 
   const SERVER_PORT = process.env.SERVER_PORT || 3003;
 
-  app.get("/class/:classId", getClassInformation(databaseClient));
+  app.get("/classes/:classId", getClassInformation(databaseClient));
   app.get(
-    "/class/:classId/grades",
+    "/classes/:classId/grades",
     getAllStudentGradesForClass(databaseClient)
   );
   app.get(
-    "/class/:classId/grades/tests/:testId",
+    "/classes/:classId/grades/tests/:testId",
     getStudentGradesForTest(databaseClient)
   );
 
