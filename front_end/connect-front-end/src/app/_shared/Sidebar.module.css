@@ -1,0 +1,64 @@
+/* Sidebar Section, 1/6 in width */
+.SidebarContainer {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh;
+  max-height: 100vh;
+}
+
+.SidebarInnerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1rem;
+
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  gap: 0.5rem;
+}
+
+.SidebarSectionSeperatorText {
+  font-size: small;
+  opacity: 0.5;
+}
+
+/* SidebarRow Section */
+.SidebarRowContainer {
+  display: grid;
+  grid-template-columns: 20% 80%;
+
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+
+  width: 85%;
+}
+
+.SidebarRowContainer:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.SidebarRowIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+  padding-right: 1rem;
+}
+
+.SidebarRowText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  font-weight: 500;
+}
