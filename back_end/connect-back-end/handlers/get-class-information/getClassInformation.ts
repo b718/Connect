@@ -7,6 +7,8 @@ type GetClassInformationResponse = {
   statusCode: number;
   message: string;
   data: {
+    courseName: string;
+    studentGradeYear: number;
     teachers: Teachers[];
     students: Students[];
   };

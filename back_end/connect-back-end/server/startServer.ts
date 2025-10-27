@@ -6,6 +6,7 @@ import cors from "cors";
 import getStudentGradesForTest from "../handlers/get-student-grades-for-test/getStudentGradesForTest";
 import getAllStudentGradesForClass from "../handlers/get-all-student-grades-for-class/getAllStudentGradesForClass";
 import getClassInformation from "../handlers/get-class-information/getClassInformation";
+import getClasses from "../handlers/get-classes/getClasses";
 
 export default async function startServer(databaseClient: PrismaClient) {
   const logger = pino({
@@ -17,6 +18,7 @@ export default async function startServer(databaseClient: PrismaClient) {
 
   const SERVER_PORT = process.env.SERVER_PORT || 3003;
 
+  app.get("/classes", getClasses(databaseClient));
   app.get("/classes/:classId", getClassInformation(databaseClient));
   app.get(
     "/classes/:classId/grades",
