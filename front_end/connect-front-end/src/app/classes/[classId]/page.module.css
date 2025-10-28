@@ -1,0 +1,93 @@
+/* DisplayStudentsInformation, DisplayTeachersInformation Section */
+.DisplayStudentsInformationContainer,
+.DisplayTeachersInformationContainer {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+
+  gap: 1rem;
+
+  background-color: white;
+}
+
+.DisplayStudentsInformationHeader,
+.DisplayTeachersInformationHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background-color: white;
+}
+
+.DisplayStudentsInformationInnerContainer,
+.DisplayTeachersInformationInnerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  gap: 0.25rem;
+
+  background-color: white;
+  cursor: pointer;
+  transition: all 500s ease-in-out;
+}
+
+.DisplayStudentsInformationInnerContainer:hover,
+.DisplayTeachersInformationInnerContainer:hover {
+  box-shadow: 0 2px 8px rgba(238, 255, 0);
+}
+
+.TabContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  background-color: white;
+}
+
+.Tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background-color: #f1f1f1;
+  border-radius: 4px 4px 0 0;
+  margin-right: 0.5rem;
+}
+
+.ActiveTab {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.TabContent {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0 4px 4px 4px;
+  background-color: #fff;
+}
+
+/* DisplayClassInformation Section */
+.DisplayClassInformationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  gap: 0.5rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+}
+
+/* Page Section */
+.PageContainer {
+  display: flex;
+  flex-direction: row;
+}
