@@ -1,0 +1,18 @@
+/* Mainscreen Section, 5/6 in width */
+.MainScreenContainer {
+  display: flex;
+  align-items: flex-start;
+
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  width: calc(100% - 250px);
+  min-height: 100vh;
+  max-height: 100vh;
+}
+
+.MainScreenContainer > * {
+  border-radius: 12px;
+  width: 100%;
+}
