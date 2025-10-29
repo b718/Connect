@@ -10,18 +10,21 @@ const DisplayStudentsInformation: FC<DisplayStudentsInformationProps> = ({
   students,
 }) => {
   return (
-    <div className={styles.DisplayStudentsInformationContainer}>
-      <p className={styles.DisplayStudentsInformationHeader}>Students</p>
+    <table className={styles.DisplayInformationTable}>
+      <tr>
+        <th>Student Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+
       {students.map((student) => (
-        <div
-          key={student.studentId}
-          className={styles.DisplayStudentsInformationInnerContainer}
-        >
-          <div>{student.firstName}</div>
-          <div>{student.lastName}</div>
-        </div>
+        <tr key={student.studentId}>
+          <td>{student.studentId}</td>
+          <td>{student.firstName}</td>
+          <td>{student.lastName}</td>
+        </tr>
       ))}
-    </div>
+    </table>
   );
 };
 
