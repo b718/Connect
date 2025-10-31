@@ -11,19 +11,23 @@ const DisplayStudentsInformation: FC<DisplayStudentsInformationProps> = ({
 }) => {
   return (
     <table className={styles.DisplayInformationTable}>
-      <tr>
-        <th>Student Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-      </tr>
-
-      {students.map((student) => (
-        <tr key={student.studentId}>
-          <td>{student.studentId}</td>
-          <td>{student.firstName}</td>
-          <td>{student.lastName}</td>
+      <thead>
+        <tr>
+          <th>Student Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
         </tr>
-      ))}
+      </thead>
+
+      <tbody>
+        {students.map((student) => (
+          <tr key={student.studentId}>
+            <td>{student.studentId}</td>
+            <td>{student.firstName}</td>
+            <td>{student.lastName}</td>
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 };

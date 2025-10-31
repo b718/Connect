@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import styles from "../page.module.css";
-import { StudentGrades } from "../_utilities/fetchStudentGradesForClass";
+import { CategorizedTests } from "../_utilities/categorizeTestsForStudents";
 
 interface DisplayOverviewInformationProps {
-  studentGrades: StudentGrades[];
+  studentGrades: CategorizedTests;
 }
 
 const DisplayOverviewInformation: FC<DisplayOverviewInformationProps> = ({
@@ -11,23 +11,31 @@ const DisplayOverviewInformation: FC<DisplayOverviewInformationProps> = ({
 }) => {
   return (
     <table className={styles.DisplayInformationTable}>
-      <tr>
-        <th>Student Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Test Name</th>
-        <th>Test Grade</th>
-      </tr>
-
-      {studentGrades.map((student) => (
-        <tr key={student.studentId}>
-          <td>{student.studentId}</td>
-          <td>{student.firstName}</td>
-          <td>{student.lastName}</td>
-          <td>{student.testName}</td>
-          <td>{student.testGrade.toFixed(2)}%</td>
+      <thead>
+        <tr>
+          <th>Student Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          {studentGrades.tests.map((test) => (
+            <th>
+              {test.testName} {test.testId}
+            </th>
+          ))}
         </tr>
-      ))}
+      </thead>
+
+      <tbody>
+        {studentGrades.students.map((student) => (
+          <tr key={student.studentId}>
+            <td>{student.studentId}</td>
+            <td>{student.firstName}</td>
+            <td>{student.lastName}</td>
+            {student.testGrades.map((testGrade) => (
+              <td>{testGrade.toFixed(2)}%</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 };
