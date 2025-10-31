@@ -8,8 +8,9 @@ type AllStudentGradeForClass = {
   firstName: string;
   lastName: string;
   testName: string;
+  testId: string;
   testGrade: number;
-  createdAt: Date;
+  testCreationDate: Date;
 };
 
 type GetAllStudentGradesForClassResponse = {
@@ -61,6 +62,7 @@ async function getAllStudentGradesForClassQuery(
         },
         test: {
           select: {
+            testId: true,
             testName: true,
             createdAt: true,
           },
@@ -77,7 +79,9 @@ async function getAllStudentGradesForClassQuery(
   return allStudentGradesForClass.map((value) => {
     return {
       ...value.student,
-      ...value.test,
+      testId: value.test.testId,
+      testName: value.test.testName,
+      testCreationDate: value.test.createdAt,
       testGrade: value.testGrade,
     };
   });
