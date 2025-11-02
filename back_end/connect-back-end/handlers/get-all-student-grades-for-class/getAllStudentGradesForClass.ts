@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import getViewTestUrl from "./getViewTestUrl";
 import pino from "pino";
 
 type AllStudentGradeForClass = {
@@ -11,6 +12,7 @@ type AllStudentGradeForClass = {
   testId: string;
   testGrade: number;
   testCreationDate: Date;
+  viewTestUrl: string | undefined;
 };
 
 type GetAllStudentGradesForClassResponse = {
@@ -76,15 +78,28 @@ async function getAllStudentGradesForClassQuery(
       },
     });
 
-  return allStudentGradesForClass.map((value) => {
-    return {
-      ...value.student,
-      testId: value.test.testId,
-      testName: value.test.testName,
-      testCreationDate: value.test.createdAt,
-      testGrade: value.testGrade,
-    };
+  const testIdToViewTestUrl = new Map<string, Promise<string>>();
+
+  allStudentGradesForClass.forEach((studentGrade) => {
+    const testId = studentGrade.test.testId;
+    if (!testIdToViewTestUrl.has(testId)) {
+      const viewTestUrl = getViewTestUrl(classId, testId);
+      testIdToViewTestUrl.set(testId, viewTestUrl);
+    }
   });
+
+  return Promise.all(
+    allStudentGradesForClass.map(async (value) => {
+      return {
+        ...value.student,
+        testId: value.test.testId,
+        testName: value.test.testName,
+        testCreationDate: value.test.createdAt,
+        testGrade: value.testGrade,
+        viewTestUrl: await testIdToViewTestUrl.get(value.test.testId),
+      };
+    })
+  );
 }
 
 export default function getAllStudentGradesForClass(
