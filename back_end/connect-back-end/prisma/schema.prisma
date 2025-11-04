@@ -58,6 +58,8 @@ model Tests {
   studentTestResults StudentTestResults[]
 
   createdAt DateTime @default(now())
+
+  @@unique([testName, classesTableId])
 }
 
 model StudentTestResults {
