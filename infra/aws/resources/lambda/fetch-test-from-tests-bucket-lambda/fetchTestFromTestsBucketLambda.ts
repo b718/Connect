@@ -6,7 +6,7 @@ import {
   HttpMethod,
   Runtime,
 } from "aws-cdk-lib/aws-lambda";
-import { ConnectStack } from "../../lib/aws-stack";
+import { ConnectStack } from "../../../lib/aws-stack";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 export default function createFetchTestFromTestsBucketLambda(
@@ -16,7 +16,7 @@ export default function createFetchTestFromTestsBucketLambda(
   const fetchTestFromTestsBucketLambdaId =
     "connect-fetch-test-from-tests-bucket-lambda";
   const fetchTestFromTestsBucketLambdaCode = Code.fromAsset(
-    "./resources/lambda/scripts/get-presigned-url-lambda"
+    "./resources/lambda/fetch-test-from-tests-bucket-lambda/scripts/get-presigned-url-lambda"
   );
 
   const fetchTestFromTestsBucketLambda = new Function(
