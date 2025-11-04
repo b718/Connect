@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient, Students, Tests } from "@prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { getTestUploadPresignedUrl } from "./getUploadTestUrl";
 import pino from "pino";
 
 type CreateTestForClassRequest = {
@@ -10,8 +11,26 @@ type CreateTestForClassRequest = {
 type CreateTestForClassRequestResponse = {
   statusCode: number;
   testId: string;
+  presignedUrl: string;
   message: string;
 };
+
+async function findTest(
+  databaseClient: PrismaClient,
+  testName: string,
+  classId: string
+) {
+  const existingTest = await databaseClient.tests.findUnique({
+    where: {
+      testName_classesTableId: {
+        testName: testName,
+        classesTableId: classId,
+      },
+    },
+  });
+
+  return existingTest;
+}
 
 async function createNewTest(
   transactionClient: Prisma.TransactionClient,
@@ -51,10 +70,12 @@ async function createStudentTestResultsForNewTest(
   studentsInClass: Students[]
 ) {
   const dataToBeConnected = studentsInClass.map((student) => {
+    const STARTING_GRADE = 100;
+
     return {
       testsTableId: newTest.testId,
       studentsTableId: student.studentId,
-      testGrade: 100,
+      testGrade: STARTING_GRADE,
     };
   });
 
@@ -67,11 +88,13 @@ function createCreateTestForClassRequestResponse(
   statusCode: number,
   message: string,
   testId: string,
+  presignedUrl: string,
   res: Response
 ) {
   const response: CreateTestForClassRequestResponse = {
     statusCode,
     testId,
+    presignedUrl,
     message,
   };
 
@@ -90,38 +113,48 @@ export default function postCreateTestForClass(databaseClient: PrismaClient) {
     const data: CreateTestForClassRequest = req.body;
 
     try {
-      const testId = await databaseClient.$transaction(async (transaction) => {
-        const newTest = await createNewTest(
-          transaction,
-          data.testName,
-          classId
-        );
+      let newTest = await findTest(databaseClient, data.testName, classId);
 
-        const allStudents = await getAllStudentGradesForClass(
-          transaction,
-          classId
-        );
+      if (!newTest) {
+        newTest = await databaseClient.$transaction(async (transaction) => {
+          const newTest = await createNewTest(
+            transaction,
+            data.testName,
+            classId
+          );
 
-        await createStudentTestResultsForNewTest(
-          transaction,
-          newTest,
-          allStudents
-        );
+          const allStudents = await getAllStudentGradesForClass(
+            transaction,
+            classId
+          );
 
-        return newTest.testId;
-      });
+          await createStudentTestResultsForNewTest(
+            transaction,
+            newTest,
+            allStudents
+          );
+
+          return newTest;
+        });
+      }
+
+      const presignedUrl = await getTestUploadPresignedUrl(
+        classId,
+        newTest.testId
+      );
 
       logger.info({
         classId: classId,
         testName: data.testName,
-        testId: testId,
+        testId: newTest.testId,
         message: successMessage,
       });
 
       createCreateTestForClassRequestResponse(
         StatusCodes.OK,
         successMessage,
-        testId,
+        newTest.testId,
+        presignedUrl,
         res
       );
     } catch (error) {
@@ -135,6 +168,7 @@ export default function postCreateTestForClass(databaseClient: PrismaClient) {
       createCreateTestForClassRequestResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
         errorMessage,
+        "",
         "",
         res
       );
