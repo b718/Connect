@@ -7,7 +7,7 @@ import getStudentGradesForTest from "../handlers/get-student-grades-for-test/get
 import getAllStudentGradesForClass from "../handlers/get-all-student-grades-for-class/getAllStudentGradesForClass";
 import getClassInformation from "../handlers/get-class-information/getClassInformation";
 import getClasses from "../handlers/get-classes/getClasses";
-import postCreateTestForClass from "../handlers/post-create-test-for-class/postCreateTestForClass";
+import createTestForClass from "../handlers/post/create-test-for-class/createTestForClass";
 
 export default async function startServer(databaseClient: PrismaClient) {
   const logger = pino({
@@ -35,7 +35,7 @@ export default async function startServer(databaseClient: PrismaClient) {
   // post handlers
   app.post(
     "/classes/:classId/tests/create",
-    postCreateTestForClass(databaseClient)
+    createTestForClass(databaseClient)
   );
 
   app.listen(SERVER_PORT, () => {

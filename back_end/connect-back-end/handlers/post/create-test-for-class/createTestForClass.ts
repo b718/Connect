@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient, Students, Tests } from "@prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { getTestUploadPresignedUrl } from "./getUploadTestUrl";
 import pino from "pino";
+import { getTeacherTestUploadPresignedUrl } from "./getTeacherUploadTestUrl";
 
 type CreateTestForClassRequest = {
   testName: string;
@@ -101,11 +101,11 @@ function createCreateTestForClassRequestResponse(
   res.status(statusCode).json(response);
 }
 
-export default function postCreateTestForClass(databaseClient: PrismaClient) {
+export default function createTestForClass(databaseClient: PrismaClient) {
   const successMessage = "successfully created test for all students in class";
   const errorMessage = "unsuccessfully created test for all students in class";
   const logger = pino({
-    name: "handlers/post-create-test-for-class/postCreateTestForClass.ts",
+    name: "handlers/post/create-test-for-class/createTestForClass.ts",
   });
 
   return async function (req: Request, res: Response) {
@@ -138,7 +138,7 @@ export default function postCreateTestForClass(databaseClient: PrismaClient) {
         });
       }
 
-      const presignedUrl = await getTestUploadPresignedUrl(
+      const presignedUrl = await getTeacherTestUploadPresignedUrl(
         classId,
         newTest.testId
       );

@@ -1,8 +1,8 @@
-type GetTestUploadPresignedUrlProps = {
+type GetTeacherTestUploadPresignedUrl = {
   presignedUrl: string;
 };
 
-export async function getTestUploadPresignedUrl(
+export async function getTeacherTestUploadPresignedUrl(
   classId: string,
   testId: string
 ) {
@@ -17,7 +17,7 @@ export async function getTestUploadPresignedUrl(
       testId: testId,
     }),
   });
-  const response: GetTestUploadPresignedUrlProps =
+  const response: GetTeacherTestUploadPresignedUrl =
     await testUploadPresignedUrl.json();
 
   if (!testUploadPresignedUrl.ok) {
