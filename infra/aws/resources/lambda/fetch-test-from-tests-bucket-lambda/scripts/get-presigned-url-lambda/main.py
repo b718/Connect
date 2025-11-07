@@ -9,10 +9,10 @@ logger.setLevel("INFO")
 BUCKET_NAME = "connect-tests-bucket"
 
 def get_answer_key_presigned_url(class_id: str, test_id: str) -> str:
-    return f"class/{class_id}/{test_id}.pdf"
+    return f"class/{class_id}/tests/{test_id}.pdf"
 
 def get_student_submission_presigned_url(class_id: str, student_id: str, test_id: str) -> str:
-    return f"class/{class_id}/student/{student_id}/{test_id}.pdf"
+    return f"class/{class_id}/students/{student_id}/tests/{test_id}.pdf"
     
 def get_presigned_url_to_fetch_from_s3(student_id: str, class_id: str, test_id: str) -> str:
     EXPIRY_TIME = 300
