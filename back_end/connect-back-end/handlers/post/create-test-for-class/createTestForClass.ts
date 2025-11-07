@@ -70,7 +70,7 @@ async function createStudentTestResultsForNewTest(
   studentsInClass: Students[]
 ) {
   const dataToBeConnected = studentsInClass.map((student) => {
-    const STARTING_GRADE = 100;
+    const STARTING_GRADE = -1;
 
     return {
       testsTableId: newTest.testId,
