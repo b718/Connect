@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.926.0",
     "@google/genai": "^1.26.0",
     "@prisma/client": "^6.17.1",
     "@types/cors": "^2.8.19",
