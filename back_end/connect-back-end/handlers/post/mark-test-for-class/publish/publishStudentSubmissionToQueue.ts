@@ -1,9 +1,5 @@
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 
-function createMessageGroupId(classId: string, testId: string) {
-  return classId + ":" + testId;
-}
-
 function createTestSubmissionMessage(
   classId: string,
   studentId: string,

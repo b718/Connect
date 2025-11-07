@@ -1,8 +1,8 @@
 import { SQSClient } from "@aws-sdk/client-sqs";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import pino from "pino";
 import { publishStudentSubmissionToQueue } from "./publishStudentSubmissionToQueue";
+import pino from "pino";
 
 type PublishStudentSubmissionEventResponse = {
   statusCode: number;
