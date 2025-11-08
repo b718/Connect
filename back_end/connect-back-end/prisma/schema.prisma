@@ -71,7 +71,10 @@ model StudentTestResults {
   studentsTableId String
   student         Students @relation(fields: [studentsTableId], references: [studentId])
 
-  testGrade Int
+  testGrade                  Int
+  manualInterventionRequired Boolean @default(false)
 
   createdAt DateTime @default(now())
+
+  @@unique([testsTableId, studentsTableId])
 }
