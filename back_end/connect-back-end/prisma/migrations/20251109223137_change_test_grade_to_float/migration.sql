@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "StudentTestResults" ALTER COLUMN "testGrade" SET DATA TYPE DOUBLE PRECISION;
