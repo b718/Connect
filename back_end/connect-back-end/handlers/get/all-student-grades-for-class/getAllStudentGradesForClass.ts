@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import getViewTestUrl from "./getViewTestUrl";
+import getAnswerKeyUrl from "./getAnswerKeyUrl";
 import pino from "pino";
 
 type AllStudentGradeForClass = {
@@ -12,7 +12,8 @@ type AllStudentGradeForClass = {
   testId: string;
   testGrade: number;
   testCreationDate: Date;
-  viewTestUrl: string | undefined;
+  viewAnswerKeyUrl: string | undefined;
+  manualInterventionRequired: boolean;
 };
 
 type GetAllStudentGradesForClassResponse = {
@@ -24,13 +25,18 @@ type GetAllStudentGradesForClassResponse = {
 function createGetAllStudentGradesForClassResponse(
   statusCode: number,
   message: string,
-  data: AllStudentGradeForClass[],
+  data: PromiseSettledResult<AllStudentGradeForClass>[],
   res: Response
 ) {
   const response: GetAllStudentGradesForClassResponse = {
     statusCode,
     message,
-    data,
+    data: data
+      .filter(
+        (allStudentGradeForClass) =>
+          allStudentGradeForClass.status != "rejected"
+      )
+      .map((allStudentGradeForClass) => allStudentGradeForClass.value),
   };
 
   res.status(statusCode).json(response);
@@ -70,6 +76,7 @@ async function getAllStudentGradesForClassQuery(
           },
         },
         testGrade: true,
+        manualInterventionRequired: true,
       },
       orderBy: {
         test: {
@@ -78,25 +85,30 @@ async function getAllStudentGradesForClassQuery(
       },
     });
 
-  const testIdToViewTestUrl = new Map<string, Promise<string>>();
+  const testClassIdToAnswerKeyUrl = new Map<string, Promise<string>>();
 
   allStudentGradesForClass.forEach((studentGrade) => {
     const testId = studentGrade.test.testId;
-    if (!testIdToViewTestUrl.has(testId)) {
-      const viewTestUrl = getViewTestUrl(classId, testId);
-      testIdToViewTestUrl.set(testId, viewTestUrl);
+    const testClassIdKey = testId + ":" + classId;
+
+    if (!testClassIdToAnswerKeyUrl.has(testClassIdKey)) {
+      const viewAnswerKeyUrl = getAnswerKeyUrl(classId, testId);
+      testClassIdToAnswerKeyUrl.set(testClassIdKey, viewAnswerKeyUrl);
     }
   });
 
-  return Promise.all(
+  return Promise.allSettled(
     allStudentGradesForClass.map(async (value) => {
+      const testClassIdKey = value.test.testId + ":" + classId;
+
       return {
         ...value.student,
         testId: value.test.testId,
         testName: value.test.testName,
         testCreationDate: value.test.createdAt,
         testGrade: value.testGrade,
-        viewTestUrl: await testIdToViewTestUrl.get(value.test.testId),
+        manualInterventionRequired: value.manualInterventionRequired,
+        viewAnswerKeyUrl: await testClassIdToAnswerKeyUrl.get(testClassIdKey),
       };
     })
   );
@@ -117,14 +129,12 @@ export default function getAllStudentGradesForClass(
     const classId = req.params.classId;
 
     try {
-      const allStudentGradesForClass = await getAllStudentGradesForClassQuery(
-        databaseClient,
-        classId
-      );
+      const allStudentGradesForClass: PromiseSettledResult<AllStudentGradeForClass>[] =
+        await getAllStudentGradesForClassQuery(databaseClient, classId);
 
       logger.info({
-        message: successMessage,
         classId: classId,
+        message: successMessage,
       });
 
       createGetAllStudentGradesForClassResponse(
@@ -134,11 +144,13 @@ export default function getAllStudentGradesForClass(
         res
       );
     } catch (error) {
-      logger.error({
-        classId: classId,
-        error: error,
-        message: errorMessage,
-      });
+      if (error instanceof Error) {
+        logger.error({
+          classId: classId,
+          error: error.message,
+          message: errorMessage,
+        });
+      }
 
       createGetAllStudentGradesForClassResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
