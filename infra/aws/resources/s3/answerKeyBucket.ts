@@ -8,7 +8,7 @@ export default function createTestsBucket(connectStack: ConnectStack) {
     cors: [
       {
         allowedHeaders: ["*"],
-        allowedMethods: [HttpMethods.PUT],
+        allowedMethods: [HttpMethods.PUT, HttpMethods.GET],
         allowedOrigins: ["*"],
       },
     ],
