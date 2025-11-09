@@ -124,7 +124,7 @@ export async function gradeTest(
   const encodedStudentSubmission = encodedSubmissions[1];
 
   const response = await geminiClient.models.generateContent({
-    model: "gemini-2.5-pro",
+    model: "gemini-2.5-flash",
     contents: [
       createAnswerKeyRequest(encodedAnswerKey),
       createStudentSubmissionRequest(encodedStudentSubmission),
