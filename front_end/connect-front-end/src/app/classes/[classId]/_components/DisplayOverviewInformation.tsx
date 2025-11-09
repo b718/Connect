@@ -1,9 +1,10 @@
 import React, { FC } from "react";
+import { CategorizedTests } from "../_utilities/fetch-student-grades-for-class/categorizeTestsForStudents";
 import styles from "../page.module.css";
-import { CategorizedTests } from "../_utilities/categorizeTestsForStudents";
 
 interface DisplayOverviewInformationProps {
   studentGrades: CategorizedTests;
+  classId: string;
 }
 
 const DisplayOverviewInformation: FC<DisplayOverviewInformationProps> = ({
@@ -18,7 +19,13 @@ const DisplayOverviewInformation: FC<DisplayOverviewInformationProps> = ({
           <th>Last Name</th>
           {studentGrades.tests.map((test) => (
             <th>
-              {test.testName} {test.testId}
+              {test.viewAnswerKeyUrl ? (
+                <a target={"_blank"} href={test.viewAnswerKeyUrl}>
+                  {test.testName}
+                </a>
+              ) : (
+                `${test.testName}`
+              )}
             </th>
           ))}
         </tr>
@@ -31,7 +38,18 @@ const DisplayOverviewInformation: FC<DisplayOverviewInformationProps> = ({
             <td>{student.firstName}</td>
             <td>{student.lastName}</td>
             {student.testGrades.map((testGrade) => (
-              <td>{testGrade.toFixed(2)}%</td>
+              <td>
+                {testGrade.viewStudentSubmissionUrl ? (
+                  <a
+                    target={"_blank"}
+                    href={testGrade.viewStudentSubmissionUrl}
+                  >
+                    {testGrade.grade.toFixed(2)}%
+                  </a>
+                ) : (
+                  `${testGrade.grade.toFixed(2)}%`
+                )}
+              </td>
             ))}
           </tr>
         ))}
