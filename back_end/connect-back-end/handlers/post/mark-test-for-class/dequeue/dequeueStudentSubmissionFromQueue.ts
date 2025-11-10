@@ -61,6 +61,7 @@ export async function dequeueStudentSubmissionFromQueue(
         if (!gradeStudentSubmission.confident) {
           await databaseClient.studentTestResults.update({
             data: {
+              testGrade: gradeStudentSubmission.grade,
               manualInterventionRequired: true,
             },
             where: {
