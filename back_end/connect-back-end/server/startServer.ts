@@ -10,6 +10,9 @@ import getClasses from "../handlers/get/classes/getClasses";
 import createTestForClass from "../handlers/post/create-test-for-class/createTestForClass";
 import studentTestUploadPresignedUrl from "../handlers/get/student-test-upload-presigned-url/studentTestUploadPresignedUrl";
 import publishStudentSubmissionEvent from "../handlers/post/mark-test-for-class/publish/publishStudentSubmissionEvent";
+import dequeueStudentSubmissionEvent from "../handlers/post/mark-test-for-class/dequeue/dequeueStudentSubmissionEvent";
+import getStudentTestSubmission from "../handlers/get/student-test-submission/getStudentTestSubmission";
+import patchStudentSubmissionGrade from "../handlers/patch/student-submission-grade/patchStudentSubmissionGrade";
 
 export default async function startServer(databaseClient: PrismaClient) {
   const logger = pino({
@@ -37,6 +40,10 @@ export default async function startServer(databaseClient: PrismaClient) {
     "/classes/:classId/students/:studentId/tests/:testId/grade",
     studentTestUploadPresignedUrl()
   );
+  app.get(
+    "/classes/:classId/students/:studentId/tests/:testId/submissions",
+    getStudentTestSubmission()
+  );
 
   // post handlers
   app.post(
@@ -46,6 +53,12 @@ export default async function startServer(databaseClient: PrismaClient) {
   app.post(
     "/classes/:classId/students/:studentId/tests/:testId/grade",
     publishStudentSubmissionEvent()
+  );
+
+  // patch handlers
+  app.patch(
+    "/students/:studentId/tests/:testId/submissions",
+    patchStudentSubmissionGrade(databaseClient)
   );
 
   app.listen(SERVER_PORT, () => {
