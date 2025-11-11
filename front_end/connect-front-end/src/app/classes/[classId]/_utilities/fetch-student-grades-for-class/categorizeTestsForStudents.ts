@@ -1,15 +1,22 @@
 import { StudentGrades } from "./fetchStudentGradesForClass";
 
+type TestGrade = {
+  grade: number;
+  manualInterventionRequired: boolean;
+  viewStudentSubmissionUrl: string;
+};
+
 type Students = {
   studentId: string;
   firstName: string;
   lastName: string;
-  testGrades: number[];
+  testGrades: TestGrade[];
 };
 
 type Tests = {
   testId: string;
   testName: string;
+  viewAnswerKeyUrl: string;
 };
 
 export type CategorizedTests = {
@@ -18,6 +25,7 @@ export type CategorizedTests = {
 };
 
 export function categorizeTestsForStudents(studentGrades: StudentGrades[]) {
+  console.log(studentGrades);
   const testIdToTests = new Map<string, Tests>();
   const studentIdToStudents = new Map<string, Students>();
   const processedTestsSet = new Set();
@@ -27,6 +35,7 @@ export function categorizeTestsForStudents(studentGrades: StudentGrades[]) {
       testIdToTests.set(grade.testId, {
         testId: grade.testId,
         testName: grade.testName,
+        viewAnswerKeyUrl: grade.viewAnswerKeyUrl,
       });
     }
 
@@ -41,12 +50,14 @@ export function categorizeTestsForStudents(studentGrades: StudentGrades[]) {
   }
 
   for (const grade of studentGrades) {
-    const processedTestsKey = `${grade.studentId}:${grade.testName}`;
+    const processedTestsKey = `${grade.studentId}:${grade.testId}`;
     if (!processedTestsSet.has(processedTestsKey)) {
       processedTestsSet.add(processedTestsKey);
-      studentIdToStudents
-        .get(grade.studentId)
-        ?.testGrades.push(grade.testGrade);
+      studentIdToStudents.get(grade.studentId)?.testGrades.push({
+        grade: grade.testGrade,
+        viewStudentSubmissionUrl: grade.viewStudentSubmissionUrl,
+        manualInterventionRequired: grade.manualInterventionRequired,
+      });
     }
   }
 
