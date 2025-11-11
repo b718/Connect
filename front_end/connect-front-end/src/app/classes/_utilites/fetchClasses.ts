@@ -23,11 +23,5 @@ export async function fetchClasses() {
     throw Error("unable to get classes, please try again");
   }
 
-  const returnValue: Class[] = [];
-
-  for (let i = 0; i < 20; i++) {
-    returnValue.push(...response.data);
-  }
-
-  return returnValue;
+  return response.data;
 }
