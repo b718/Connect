@@ -60,7 +60,6 @@ const DisplayClassOverviewInformation: FC<DisplayOverviewInformationProps> = ({
                       student.studentId,
                       studentGrades.tests[index].testId
                     )}
-                    target={"_blank"}
                   >
                     {testGrade.grade.toFixed(2)}%
                   </Link>
