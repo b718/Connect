@@ -14,12 +14,6 @@ import {
 } from "../_utilities/fetch-class/fetchClass";
 import DisplayCreateTestInformation from "./create-test/DisplayCreateTestInformation";
 import DisplayClassOverviewInformation from "./class-overview-information/DisplayClassOverviewInformation";
-
-const TEACHERS = "Teachers";
-const STUDENTS = "Students";
-const OVERVIEW = "Overview";
-const CREATE_TEST = "Create Test";
-
 export type Tab = "Students" | "Teachers" | "Overview" | "Create Test";
 
 const DisplayClassInformation = () => {
@@ -29,12 +23,26 @@ const DisplayClassInformation = () => {
   const [studentGrades, setStudentGrades] = useState<CategorizedTests>();
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
   const [error, setError] = useState<Error>();
+  const TABS_CONFIG = [
+    { value: "Overview", display: "Overview" },
+    {
+      value: "Students",
+      display: "Students",
+      count: classInformation?.students.length,
+    },
+    {
+      value: "Teachers",
+      display: "Teachers",
+      count: classInformation?.teachers.length,
+    },
+    { value: "Create Test", display: "Create Test" },
+  ];
 
   useEffect(() => {
     Promise.all([fetchClass(classId), fetchStudentGrades(classId)])
-      .then((results) => {
-        setClassInformation(results[0]);
-        setStudentGrades(results[1]);
+      .then(([classInformation, grades]) => {
+        setClassInformation(classInformation);
+        setStudentGrades(grades);
       })
       .catch((error) => setError(error));
   }, [classId]);
@@ -55,58 +63,42 @@ const DisplayClassInformation = () => {
     );
   }
 
+  const tabContent: Record<Tab, React.ReactNode> = {
+    Overview: (
+      <DisplayClassOverviewInformation
+        studentGrades={studentGrades}
+        classId={classId}
+      />
+    ),
+    Students: (
+      <DisplayStudentsInformation students={classInformation.students} />
+    ),
+    Teachers: (
+      <DisplayTeachersInformation teachers={classInformation.teachers} />
+    ),
+    "Create Test": <DisplayCreateTestInformation classId={classId} />,
+  };
+
   return (
     <div className={styles.DisplayClassInformationContainer}>
       <h1 className={styles.DisplayClassInformationHeader}>
         {`${classInformation.courseName}`}
       </h1>
 
-      <div className={styles.TabContainer}>
-        <DisplayClassTab
-          activeTabValue={activeTab}
-          tabValue={OVERVIEW}
-          tabDisplayValue={OVERVIEW}
-          setTabValue={setActiveTab}
-        />
-        <DisplayClassTab
-          activeTabValue={activeTab}
-          tabValue={STUDENTS}
-          tabDisplayValue={STUDENTS}
-          count={classInformation.students.length}
-          setTabValue={setActiveTab}
-        />
-        <DisplayClassTab
-          activeTabValue={activeTab}
-          tabValue={TEACHERS}
-          tabDisplayValue={TEACHERS}
-          count={classInformation.teachers.length}
-          setTabValue={setActiveTab}
-        />
-        <DisplayClassTab
-          activeTabValue={activeTab}
-          tabValue={CREATE_TEST}
-          tabDisplayValue={CREATE_TEST}
-          setTabValue={setActiveTab}
-        />
+      <div className={styles.DisplayClassInformationTabContainer}>
+        {TABS_CONFIG.map((tab) => (
+          <DisplayClassTab
+            key={tab.value}
+            activeTabValue={activeTab}
+            tabValue={tab.value as Tab}
+            tabDisplayValue={tab.display}
+            count={tab.count}
+            setTabValue={setActiveTab}
+          />
+        ))}
       </div>
 
-      <div className={styles.TabContent}>
-        {activeTab === OVERVIEW && (
-          <DisplayClassOverviewInformation
-            studentGrades={studentGrades}
-            classId={classId}
-          />
-        )}
-        {activeTab === STUDENTS && (
-          <DisplayStudentsInformation students={classInformation.students} />
-        )}
-        {activeTab === TEACHERS && (
-          <DisplayTeachersInformation teachers={classInformation.teachers} />
-        )}
-        {activeTab === CREATE_TEST && (
-          <DisplayCreateTestInformation classId={classId} />
-        )}
-      </div>
+      <div className={styles.TabContent}>{tabContent[activeTab]}</div>
     </div>
   );
 };
