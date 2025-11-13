@@ -14,6 +14,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Auth Tables
+model Users {
+  userId   String @id @default(uuid())
+  email    String
+  password String
+  role     Role
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
 // General Tables
 model Teachers {
   teacherId String @id @default(uuid())
