@@ -74,6 +74,11 @@ export default function authenticateUser(databaseClient: PrismaClient) {
 
       const user = await clerkClient.users.getUser(userId);
       const userRole = await createNewUserQuery(databaseClient, user);
+      const updateUser = await clerkClient.users.updateUserMetadata(userId, {
+        publicMetadata: {
+          role: userRole,
+        },
+      });
 
       logger.info({
         firstName: user.firstName,
