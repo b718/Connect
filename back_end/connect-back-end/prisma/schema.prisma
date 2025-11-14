@@ -16,10 +16,12 @@ datasource db {
 
 // Auth Tables
 model Users {
-  userId   String @id @default(uuid())
-  email    String
-  password String
-  role     Role
+  userId      String @id @default(uuid())
+  clerkUserId String @unique
+  email       String
+  firstName   String
+  lastName    String
+  role        Role
 }
 
 enum Role {
