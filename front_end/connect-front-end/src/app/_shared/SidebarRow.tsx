@@ -7,7 +7,7 @@ import styles from "./Sidebar.module.css";
 interface SidebarRowProps {
   rowName: string;
   rowIcon: ReactElement;
-  redirectUrl: string;
+  redirectUrl?: string;
 }
 
 const SidebarRow: FunctionComponent<SidebarRowProps> = ({
@@ -17,6 +17,7 @@ const SidebarRow: FunctionComponent<SidebarRowProps> = ({
 }) => {
   const router = useRouter();
   const redirectToUrl = () => {
+    if (!redirectUrl) return;
     router.push("/" + redirectUrl);
   };
 

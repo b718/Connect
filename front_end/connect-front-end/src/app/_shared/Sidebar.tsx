@@ -1,12 +1,27 @@
-import React from "react";
+"use client";
+
+import React, { useContext } from "react";
 import SidebarRow from "./SidebarRow";
 import styles from "./Sidebar.module.css";
+import { SignedIn, UserButton } from "@clerk/nextjs";
+import { UserRoleContext } from "../layout";
 
 const Sidebar = () => {
+  const userRoleContext = useContext(UserRoleContext);
+  const userRole = userRoleContext?.userRole?.toString().toLowerCase() ?? "";
+
   return (
     <div className={styles.SidebarContainer}>
       <div className={styles.SidebarInnerContainer}>
         <div className={styles.SidebarSectionSeperatorText}>Home</div>
+        <SidebarRow
+          rowName={userRole}
+          rowIcon={
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          }
+        />
         <SidebarRow
           rowName={"Overview"}
           rowIcon={
