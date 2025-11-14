@@ -3,19 +3,18 @@
 import React, { useContext } from "react";
 import SidebarRow from "./SidebarRow";
 import styles from "./Sidebar.module.css";
-import { SignedIn, UserButton } from "@clerk/nextjs";
-import { UserRoleContext } from "../layout";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 
 const Sidebar = () => {
-  const userRoleContext = useContext(UserRoleContext);
-  const userRole = userRoleContext?.userRole?.toString().toLowerCase() ?? "";
+  const { user } = useUser();
+  const userRole = user?.publicMetadata.role as string;
 
   return (
     <div className={styles.SidebarContainer}>
       <div className={styles.SidebarInnerContainer}>
         <div className={styles.SidebarSectionSeperatorText}>Home</div>
         <SidebarRow
-          rowName={userRole}
+          rowName={userRole ? userRole.toLowerCase() : ""}
           rowIcon={
             <SignedIn>
               <UserButton />
