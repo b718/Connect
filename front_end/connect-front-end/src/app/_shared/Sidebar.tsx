@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import SidebarRow from "./SidebarRow";
 import styles from "./Sidebar.module.css";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";

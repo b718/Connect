@@ -3,6 +3,7 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./Sidebar.module.css";
+import { useUser } from "@clerk/nextjs";
 
 interface SidebarRowProps {
   rowName: string;
@@ -15,10 +16,18 @@ const SidebarRow: FunctionComponent<SidebarRowProps> = ({
   rowIcon,
   redirectUrl,
 }) => {
+  const { user } = useUser();
+  const userRole = user?.publicMetadata.role as string;
   const router = useRouter();
   const redirectToUrl = () => {
     if (!redirectUrl) return;
-    router.push("/" + redirectUrl);
+    const homepageRedirectUrl = "/";
+
+    if (redirectUrl == homepageRedirectUrl) {
+      router.push("/" + redirectUrl);
+    } else {
+      router.push("/" + userRole.toLowerCase() + "/" + redirectUrl);
+    }
   };
 
   return (
