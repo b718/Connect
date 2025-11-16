@@ -22,6 +22,8 @@ model Users {
   firstName   String
   lastName    String
   role        Role
+
+  students Students?
 }
 
 enum Role {
@@ -47,6 +49,9 @@ model Students {
 
   classes            Classes[]
   studentTestResults StudentTestResults[]
+
+  usersClerkUserId String @unique
+  user             Users  @relation(fields: [usersClerkUserId], references: [clerkUserId])
 
   createdAt DateTime @default(now())
 }
@@ -88,6 +93,7 @@ model StudentTestResults {
 
   testGrade                  Float
   manualInterventionRequired Boolean @default(false)
+  isSubmitted                Boolean @default(false)
 
   createdAt DateTime @default(now())
 

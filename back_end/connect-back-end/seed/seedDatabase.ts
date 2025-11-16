@@ -11,10 +11,12 @@ const sampleStudents = [
   {
     firstName: "Bryan",
     lastName: "Zhao",
+    email: "student.one@connect.com",
   },
   {
     firstName: "John",
     lastName: "Doe",
+    email: "student.two@connect.com",
   },
 ];
 
@@ -37,8 +39,29 @@ async function seedDatabase(databaseClient: PrismaClient) {
     name: "connected-back-end/seed/seedDatabase.ts",
   });
 
-  // Create the teachers and students first
   try {
+    // Create the users first
+    const sampleStudentOneUser = await databaseClient.users.create({
+      data: {
+        clerkUserId: "user_35XRdgDGK9bw0idVJiturezcPQQ",
+        email: sampleStudents[0].email,
+        firstName: sampleStudents[0].firstName,
+        lastName: sampleStudents[0].lastName,
+        role: "STUDENT",
+      },
+    });
+
+    const sampleStudentTwoUser = await databaseClient.users.create({
+      data: {
+        clerkUserId: "2",
+        email: sampleStudents[1].email,
+        firstName: sampleStudents[1].firstName,
+        lastName: sampleStudents[1].lastName,
+        role: "STUDENT",
+      },
+    });
+
+    // Create the teachers and students first
     const sampleTeacher = await databaseClient.teachers.create({
       data: {
         firstName: sampleTeachers.firstName,
@@ -50,6 +73,7 @@ async function seedDatabase(databaseClient: PrismaClient) {
       data: {
         firstName: sampleStudents[0].firstName,
         lastName: sampleStudents[0].lastName,
+        usersClerkUserId: sampleStudentOneUser.clerkUserId,
       },
     });
 
@@ -57,6 +81,7 @@ async function seedDatabase(databaseClient: PrismaClient) {
       data: {
         firstName: sampleStudents[1].firstName,
         lastName: sampleStudents[1].lastName,
+        usersClerkUserId: sampleStudentTwoUser.clerkUserId,
       },
     });
 
