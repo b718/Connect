@@ -1,0 +1,27 @@
+/* Page Section */
+.PageContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.PageNonContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.ViewStudentSubmissionContainer {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.StudentSubmissionContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
