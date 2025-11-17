@@ -8,7 +8,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { authenticateUser } from "./_utilities/authenticateUser";
+import { getUserId } from "./_utilities/getUserId";
 import styles from "./UserIdContext.module.css";
 
 interface UserIdContextType {
@@ -44,7 +44,7 @@ export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
       return;
     }
 
-    authenticateUser(getToken)
+    getUserId(getToken)
       .then((userId) => {
         setUserId(userId);
         localStorage.setItem("userId", userId);
