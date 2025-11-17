@@ -3,7 +3,6 @@ import { StudentGrades } from "./fetchStudentGradesForClass";
 type TestGrade = {
   grade: number;
   manualInterventionRequired: boolean;
-  viewStudentSubmissionUrl: string;
 };
 
 type Students = {
@@ -25,7 +24,6 @@ export type CategorizedTests = {
 };
 
 export function categorizeTestsForStudents(studentGrades: StudentGrades[]) {
-  console.log(studentGrades);
   const testIdToTests = new Map<string, Tests>();
   const studentIdToStudents = new Map<string, Students>();
   const processedTestsSet = new Set();
@@ -55,7 +53,6 @@ export function categorizeTestsForStudents(studentGrades: StudentGrades[]) {
       processedTestsSet.add(processedTestsKey);
       studentIdToStudents.get(grade.studentId)?.testGrades.push({
         grade: grade.testGrade,
-        viewStudentSubmissionUrl: grade.viewStudentSubmissionUrl,
         manualInterventionRequired: grade.manualInterventionRequired,
       });
     }
