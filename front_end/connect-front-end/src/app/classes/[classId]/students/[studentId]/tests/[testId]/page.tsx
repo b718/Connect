@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { fetchStudentSubmissionUrl } from "./_utilites/fetch-student-submission-url/fetchStudentSubmissionUrl";
 import DisplayStudentSubmission from "./_components/DisplayStudentSubmission";
-import styles from "./page.module.css";
 import Sidebar from "@/app/_shared/Sidebar";
 import MainScreen from "@/app/_shared/MainScreen";
 import DisplayUpdateGradeForm from "./_components/DisplayUpdateGradeForm";
+import styles from "./page.module.css";
 
 const page = () => {
   const router = useRouter();
