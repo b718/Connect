@@ -1,4 +1,3 @@
-import { StatusCodes } from "http-status-codes";
 import getServerUrl from "../../../../../../utilities/fetchApiUrl";
 
 export type Teacher = {
@@ -33,7 +32,7 @@ export async function fetchClass(classId: string) {
   const fetchedClass = await fetch(serverUrl + "/classes/" + classId);
   const response: FetchClassResponse = await fetchedClass.json();
 
-  if (response.statusCode != StatusCodes.OK) {
+  if (!fetchedClass.ok) {
     throw Error("unable to fetch class, please try again");
   }
 

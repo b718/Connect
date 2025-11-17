@@ -1,4 +1,3 @@
-import { StatusCodes } from "http-status-codes";
 import getServerUrl from "../../../../../../utilities/fetchApiUrl";
 
 type CreatedTest = {

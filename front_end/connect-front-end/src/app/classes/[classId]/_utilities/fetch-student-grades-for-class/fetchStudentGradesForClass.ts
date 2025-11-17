@@ -1,4 +1,3 @@
-import { StatusCodes } from "http-status-codes";
 import getServerUrl from "../../../../../../utilities/fetchApiUrl";
 import { categorizeTestsForStudents } from "./categorizeTestsForStudents";
 
@@ -10,7 +9,6 @@ export type StudentGrades = {
   testId: string;
   testGrade: number;
   viewAnswerKeyUrl: string;
-  viewStudentSubmissionUrl: string;
   manualInterventionRequired: boolean;
 };
 
@@ -27,7 +25,7 @@ export async function fetchStudentGrades(classId: string) {
   );
   const response: FetchStudentGrades = await fetchedStudentGrades.json();
 
-  if (response.statusCode != StatusCodes.OK) {
+  if (!fetchedStudentGrades.ok) {
     throw Error("unable to fetch class, please try again");
   }
 
