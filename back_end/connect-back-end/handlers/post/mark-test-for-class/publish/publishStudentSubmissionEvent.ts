@@ -2,6 +2,7 @@ import { SQSClient } from "@aws-sdk/client-sqs";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { publishStudentSubmissionToQueue } from "./publishStudentSubmissionToQueue";
+import { PrismaClient } from "@prisma/client";
 import pino from "pino";
 
 type PublishStudentSubmissionEventResponse = {
@@ -22,13 +23,35 @@ function createPublishStudentSubmissionEventResponse(
   res.status(statusCode).json(response);
 }
 
-export default function publishStudentSubmissionEvent() {
+async function markStudentSubmissionAsSubmittedQuery(
+  databaseClient: PrismaClient,
+  testId: string,
+  studentId: string
+) {
+  const studentSubmission = await databaseClient.studentTestResults.update({
+    where: {
+      testsTableId_studentsTableId: {
+        studentsTableId: studentId,
+        testsTableId: testId,
+      },
+    },
+    data: {
+      isSubmitted: true,
+    },
+  });
+
+  return studentSubmission;
+}
+
+export default function publishStudentSubmissionEvent(
+  databaseClient: PrismaClient,
+  studentSubmissionQueueClient: SQSClient
+) {
   const successMessage = "successfully published student submission event";
   const errorMessage = "unsuccessfully published student submission event";
   const logger = pino({
     name: "handlers/post/mark-test-for-class/publish/publishStudentSubmissionEvent.ts",
   });
-  const studentSubmissionQueueClient = new SQSClient({});
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;
@@ -36,11 +59,17 @@ export default function publishStudentSubmissionEvent() {
     const testId = req.params.testId;
 
     try {
-      const studentSubmission = await publishStudentSubmissionToQueue(
+      await publishStudentSubmissionToQueue(
         classId,
         studentId,
         testId,
         studentSubmissionQueueClient
+      );
+
+      await markStudentSubmissionAsSubmittedQuery(
+        databaseClient,
+        testId,
+        studentId
       );
 
       logger.info({
@@ -55,11 +84,10 @@ export default function publishStudentSubmissionEvent() {
         res
       );
     } catch (error) {
-      console.log(error);
       logger.info({
         classId: classId,
         testId: testId,
-        error: error,
+        err: error,
         message: errorMessage,
       });
 
