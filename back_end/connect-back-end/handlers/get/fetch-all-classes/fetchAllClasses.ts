@@ -24,7 +24,7 @@ function createGetClassesResponse(
   res.status(statusCode).json(response);
 }
 
-async function getClassesQuery(databaseClient: PrismaClient) {
+async function fetchAllClassesQuery(databaseClient: PrismaClient) {
   const classes = await databaseClient.classes.findMany({
     orderBy: {
       createdAt: "asc",
@@ -34,24 +34,19 @@ async function getClassesQuery(databaseClient: PrismaClient) {
   return classes;
 }
 
-export default function getClasses(databaseClient: PrismaClient) {
+export default function fetchAllClasses(databaseClient: PrismaClient) {
   const successMessage = "successfully queried all classes";
   const errorMessage = "unsuccessfully queried all classes";
-  const logger = pino({
-    name: "handlers/get-classes/getClasses.ts",
-  });
+  const logger = pino({ name: __filename });
 
-  return async function (req: Request, res: Response) {
+  return async function (_req: Request, res: Response) {
     try {
-      const classes = await getClassesQuery(databaseClient);
-      logger.info(successMessage);
+      const classes = await fetchAllClassesQuery(databaseClient);
+      logger.info({ totalClasses: classes.length }, successMessage);
 
       createGetClassesResponse(StatusCodes.OK, successMessage, classes, res);
     } catch (error) {
-      logger.error({
-        error: error,
-        message: errorMessage,
-      });
+      logger.error({ err: error }, errorMessage);
 
       createGetClassesResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
