@@ -19,6 +19,10 @@ const DisplayStudentClasses = () => {
     router.push("/student/classes/" + classId);
   };
 
+  const redirectToJoinClassesMenu = () => {
+    router.push("/student/classes/join");
+  };
+
   useEffect(() => {
     fetchStudentClasses(getToken)
       .then((studentClasses) => setStudentClasses(studentClasses))
@@ -44,6 +48,12 @@ const DisplayStudentClasses = () => {
           <div>{new Date(studentClass.createdAt).toDateString()}</div>
         </div>
       ))}
+      <div
+        className={styles.JoinNewClassContainer}
+        onClick={redirectToJoinClassesMenu}
+      >
+        <div>Don't see your class? Click here to browse all classes!</div>
+      </div>
     </div>
   );
 };
