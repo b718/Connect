@@ -35,11 +35,13 @@ const DisplayStudentClassInformation = () => {
   }, [classId]);
 
   if (error) {
-    <div>{`Error encountered while fetching information for the class: ${error.message}`}</div>;
+    <div
+      className={styles.PageNonContentContainer}
+    >{`Error encountered while fetching information for the class: ${error.message}`}</div>;
   }
 
   if (!studentClass) {
-    return <div>Loading...</div>;
+    return <div className={styles.PageNonContentContainer}>Loading...</div>;
   }
 
   return (
