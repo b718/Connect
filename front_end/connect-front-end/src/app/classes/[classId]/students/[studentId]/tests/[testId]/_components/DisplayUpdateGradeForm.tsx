@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, FormEvent, useState } from "react";
 import { patchStudentSubmissionGrade } from "../_utilites/patch-student-submission-grade/patchStudentSubmissionGrade";
 import styles from "../page.module.css";
 
@@ -17,7 +17,7 @@ const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error>();
 
-  const handleGradeChange = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleGradeChange = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (grade === DEFAULT_GRADE) {
       return;
