@@ -31,8 +31,8 @@ async function markStudentSubmissionAsSubmittedQuery(
   const studentSubmission = await databaseClient.studentTestResults.update({
     where: {
       testsTableId_studentsTableId: {
-        studentsTableId: studentId,
         testsTableId: testId,
+        studentsTableId: studentId,
       },
     },
     data: {
