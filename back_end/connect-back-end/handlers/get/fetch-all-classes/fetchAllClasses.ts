@@ -1,18 +1,26 @@
-import { Classes, PrismaClient } from "@prisma/client";
+import { PrismaClient, Teachers } from "@prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import pino from "pino";
 
+type ClassesWithTeachers = {
+  classId: string;
+  courseName: string;
+  studentGradeYear: number;
+  createdAt: Date;
+  teachers: Teachers[];
+};
+
 type GetClassesResponse = {
   statusCode: number;
   message: string;
-  data: Classes[];
+  data: ClassesWithTeachers[];
 };
 
 function createGetClassesResponse(
   statusCode: number,
   message: string,
-  data: Classes[],
+  data: ClassesWithTeachers[],
   res: Response
 ) {
   const response: GetClassesResponse = {
@@ -26,6 +34,9 @@ function createGetClassesResponse(
 
 async function fetchAllClassesQuery(databaseClient: PrismaClient) {
   const classes = await databaseClient.classes.findMany({
+    include: {
+      teachers: true,
+    },
     orderBy: {
       createdAt: "asc",
     },
