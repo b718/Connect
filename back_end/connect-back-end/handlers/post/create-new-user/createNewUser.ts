@@ -7,11 +7,55 @@ import pino from "pino";
 type AuthenticateUserResponse = {
   statusCode: number;
   message: string;
-  userRole: Role | null;
+  userId: string | null;
 };
 
 function isUserTeacher(emailAddress: string) {
   return teacherEmailAddresses.includes(emailAddress);
+}
+
+async function createNewStudent(
+  databaseClient: PrismaClient,
+  user: User,
+  userRole: Role
+) {
+  const studentData = {
+    firstName: user.firstName ?? "",
+    lastName: user.lastName ?? "",
+    usersClerkUserId: user.id,
+  };
+
+  const newStudent = await databaseClient.students.upsert({
+    where: {
+      usersClerkUserId: user.id,
+    },
+    update: studentData,
+    create: studentData,
+  });
+
+  return { userRole: userRole, id: newStudent.studentId };
+}
+
+async function createNewTeacher(
+  databaseClient: PrismaClient,
+  user: User,
+  userRole: Role
+) {
+  const teacherData = {
+    firstName: user.firstName ?? "",
+    lastName: user.lastName ?? "",
+    usersClerkUserId: user.id,
+  };
+
+  const newTeacher = await databaseClient.teachers.upsert({
+    where: {
+      usersClerkUserId: user.id,
+    },
+    update: teacherData,
+    create: teacherData,
+  });
+
+  return { userRole: userRole, id: newTeacher.teacherId };
 }
 
 async function createNewUserQuery(databaseClient: PrismaClient, user: User) {
@@ -25,7 +69,6 @@ async function createNewUserQuery(databaseClient: PrismaClient, user: User) {
     lastName: user.lastName ?? "",
     role: userRole,
   };
-
   const newUser = await databaseClient.users.upsert({
     where: {
       clerkUserId: user.id,
@@ -34,69 +77,70 @@ async function createNewUserQuery(databaseClient: PrismaClient, user: User) {
     create: userData,
   });
 
-  return newUser.role;
+  let newCreatedUser;
+
+  if (userRole == Role.STUDENT) {
+    newCreatedUser = await createNewStudent(databaseClient, user, userRole);
+  } else {
+    newCreatedUser = await createNewTeacher(databaseClient, user, userRole);
+  }
+
+  return newCreatedUser;
 }
 
 function createAuthenticateUserResponse(
   statusCode: number,
   message: string,
-  userRole: Role | null,
+  userId: string | null,
   res: Response
 ) {
   const response: AuthenticateUserResponse = {
     statusCode,
     message,
-    userRole,
+    userId,
   };
 
   res.status(statusCode).json(response);
 }
 
-export default function authenticateUser(databaseClient: PrismaClient) {
+export default function createNewUser(databaseClient: PrismaClient) {
   const successMessage = "successfully created user";
   const errorMessage = "unsuccessfully created user";
-  const logger = pino({
-    name: "handlers/post/authenticate-user/authenticateUser.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     try {
       const { userId } = getAuth(req);
       if (!userId) {
-        createAuthenticateUserResponse(
+        return createAuthenticateUserResponse(
           StatusCodes.UNAUTHORIZED,
           errorMessage,
           null,
           res
         );
-        return;
       }
 
       const user = await clerkClient.users.getUser(userId);
       const userRole = await createNewUserQuery(databaseClient, user);
       const updateUser = await clerkClient.users.updateUserMetadata(userId, {
         publicMetadata: {
-          role: userRole,
+          role: userRole.userRole,
         },
       });
 
-      logger.info({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: userRole,
-        message: successMessage,
-      });
+      logger.info(
+        { firstName: user.firstName, lastName: user.lastName, role: userRole },
+        successMessage
+      );
 
       createAuthenticateUserResponse(
         StatusCodes.OK,
         successMessage,
-        userRole,
+        userRole.id,
         res
       );
     } catch (error) {
-      logger.info({
-        message: errorMessage,
-      });
+      logger.info({ err: error }, errorMessage);
 
       createAuthenticateUserResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
