@@ -1,24 +1,48 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import {
   fetchAllClassOptions,
   Option,
 } from "../_utilities/fetch-all-class-options/fetchAllClassOptions";
 import Select, { SingleValue } from "react-select";
 import styles from "../page.module.css";
+import { UserIdContext } from "@/app/_shared/user-id/UserIdContext";
+import {
+  createStudentRegistrationForClass,
+  CreateStudentRegistrationForClassResponse,
+} from "../_utilities/create-student-registration-for-class/createStudentRegistrationForClass";
 
 const DisplayAllClassOptions = () => {
+  const STUDENT_IN_CLASS_STATUS_CODE = 400;
+  const { userId: studentId } = useContext(UserIdContext);
   const [allClassOptions, setAllClassOptions] = useState<Option[]>([]);
-  const [selectedClassId, setSelectedClassId] = useState<Option>();
+  const [selectedClass, setSelectedClass] = useState<Option>();
+  const [studentRegistrationResponse, setStudentRegistrationResponse] =
+    useState<CreateStudentRegistrationForClassResponse>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error>();
+  const [registrationError, setRegistrationError] = useState<Error>();
   const handleJoinClassFormSubmission = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(selectedClassId);
+    if (!selectedClass) return;
+
+    setLoading(true);
+    createStudentRegistrationForClass(selectedClass.value, studentId)
+      .then((response) => setStudentRegistrationResponse(response))
+      .catch((error) => setRegistrationError(error))
+      .finally(() => setLoading(false));
   };
   const handleClassSelectionChange = (newValue: SingleValue<Option>) => {
-    if (!newValue) return setSelectedClassId(undefined);
-    setSelectedClassId({ ...newValue });
+    setStudentRegistrationResponse(undefined);
+    setRegistrationError(undefined);
+
+    if (!newValue) {
+      setSelectedClass(undefined);
+      return;
+    }
+
+    setSelectedClass({ ...newValue });
   };
 
   useEffect(() => {
@@ -28,15 +52,17 @@ const DisplayAllClassOptions = () => {
   }, []);
 
   if (error) {
-    <div
-      className={styles.PageNonContentContainer}
-    >{`Error encountered while fetching all classes: ${error.message}`}</div>;
+    return (
+      <div className={styles.PageNonContentContainer}>{error.message}</div>
+    );
   }
 
   if (allClassOptions.length == 0) {
-    <div className={styles.PageNonContentContainer}>
-      Loading all classes...
-    </div>;
+    return (
+      <div className={styles.PageNonContentContainer}>
+        Loading all classes...
+      </div>
+    );
   }
 
   return (
@@ -47,7 +73,7 @@ const DisplayAllClassOptions = () => {
       >
         <Select
           options={allClassOptions}
-          value={selectedClassId}
+          value={selectedClass}
           onChange={handleClassSelectionChange}
           required
           isClearable
@@ -56,7 +82,22 @@ const DisplayAllClassOptions = () => {
         />
 
         <div className={styles.JoinClassButton}>
-          <button>Join class</button>
+          {loading ? (
+            <p>Registering student ...</p>
+          ) : (
+            <button>Join class</button>
+          )}
+        </div>
+
+        <div className={styles.RegistrationResultContainer}>
+          {studentRegistrationResponse?.statusCode ===
+            STUDENT_IN_CLASS_STATUS_CODE && (
+            <p>Student already registered in this class</p>
+          )}
+          {registrationError && <p>{registrationError.message}</p>}
+          {studentRegistrationResponse?.registered && (
+            <p>Student successfully registered</p>
+          )}
         </div>
       </form>
     </div>
