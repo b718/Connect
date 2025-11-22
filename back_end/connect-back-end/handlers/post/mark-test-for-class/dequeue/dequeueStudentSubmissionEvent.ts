@@ -25,15 +25,15 @@ function createDequeueStudentSubmissionEventResponse(
 }
 
 export default function dequeueStudentSubmissionEvent(
-  databaseClient: PrismaClient
+  databaseClient: PrismaClient,
+  studentSubmissionQueueClient: SQSClient,
+  geminiClient: GoogleGenAI
 ) {
   const successMessage = "successfully graded student submission event";
   const errorMessage = "unsuccessfully graded student submission event";
   const logger = pino({
     name: "handlers/post/mark-test-for-class/dequeue/dequeueStudentSubmissionEvent.ts",
   });
-  const studentSubmissionQueueClient = new SQSClient({});
-  const geminiClient = new GoogleGenAI({});
 
   return async function (_req: Request, res: Response) {
     try {
