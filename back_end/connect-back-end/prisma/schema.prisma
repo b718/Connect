@@ -24,6 +24,7 @@ model Users {
   role        Role
 
   students Students?
+  teachers Teachers?
 }
 
 enum Role {
@@ -38,6 +39,9 @@ model Teachers {
   lastName  String
 
   classes Classes[]
+
+  usersClerkUserId String @unique
+  user             Users  @relation(fields: [usersClerkUserId], references: [clerkUserId])
 
   createdAt DateTime @default(now())
 }
