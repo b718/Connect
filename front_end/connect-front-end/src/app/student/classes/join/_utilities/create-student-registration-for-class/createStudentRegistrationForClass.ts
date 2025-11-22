@@ -1,9 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import getServerUrl from "../../../../../../../utilities/fetchApiUrl";
 
-type CreateStudentRegistrationForClassResponse = {
+export type CreateStudentRegistrationForClassResponse = {
   statusCode: number;
   message: string;
+  registered: boolean;
 };
 
 export async function createStudentRegistrationForClass(
@@ -37,5 +38,5 @@ export async function createStudentRegistrationForClass(
     throw new Error(`unable to register student for class`);
   }
 
-  return response.statusCode;
+  return response;
 }

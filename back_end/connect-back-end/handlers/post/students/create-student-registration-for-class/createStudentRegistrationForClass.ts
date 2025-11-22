@@ -6,6 +6,7 @@ import pino from "pino";
 type CreateStudentRegistrationForClassResponse = {
   statusCode: number;
   message: string;
+  registered: boolean;
 };
 
 async function isStudentInClassQuery(
@@ -83,11 +84,13 @@ async function createStudentRegistrationForClassQuery(
 function createCreateStudentRegistrationForClassResponse(
   statusCode: number,
   message: string,
+  registered: boolean,
   res: Response
 ) {
   const response: CreateStudentRegistrationForClassResponse = {
     statusCode: statusCode,
     message: message,
+    registered: registered,
   };
 
   res.status(statusCode).json(response);
@@ -119,6 +122,7 @@ export default function createStudentRegistrationForClass(
         return createCreateStudentRegistrationForClassResponse(
           StatusCodes.BAD_REQUEST,
           "student already in class",
+          false,
           res
         );
       }
@@ -142,6 +146,7 @@ export default function createStudentRegistrationForClass(
       createCreateStudentRegistrationForClassResponse(
         StatusCodes.OK,
         successMessage,
+        true,
         res
       );
     } catch (error) {
@@ -153,6 +158,7 @@ export default function createStudentRegistrationForClass(
       createCreateStudentRegistrationForClassResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
         errorMessage,
+        false,
         res
       );
     }
