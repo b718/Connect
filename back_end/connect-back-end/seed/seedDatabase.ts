@@ -43,7 +43,7 @@ async function seedDatabase(databaseClient: PrismaClient) {
     // Create the users first
     const sampleStudentOneUser = await databaseClient.users.create({
       data: {
-        clerkUserId: "user_35XRdgDGK9bw0idVJiturezcPQQ",
+        clerkUserId: "1",
         email: sampleStudents[0].email,
         firstName: sampleStudents[0].firstName,
         lastName: sampleStudents[0].lastName,
