@@ -5,6 +5,7 @@ import pino from "pino";
 const sampleTeachers = {
   firstName: "Ms.",
   lastName: "Holman",
+  email: "teacher.one@connect.com",
 };
 
 const sampleStudents = [
@@ -61,9 +62,20 @@ async function seedDatabase(databaseClient: PrismaClient) {
       },
     });
 
+    const sampleTeacherUser = await databaseClient.users.create({
+      data: {
+        clerkUserId: "3",
+        email: sampleTeachers.email,
+        firstName: sampleTeachers.firstName,
+        lastName: sampleTeachers.lastName,
+        role: "TEACHER",
+      },
+    });
+
     // Create the teachers and students first
     const sampleTeacher = await databaseClient.teachers.create({
       data: {
+        usersClerkUserId: "3",
         firstName: sampleTeachers.firstName,
         lastName: sampleTeachers.lastName,
       },
