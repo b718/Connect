@@ -1,5 +1,5 @@
-import MainScreen from "./_shared/MainScreen";
-import Sidebar from "./_shared/Sidebar";
+import MainScreen from "./_shared/main-screen/MainScreen";
+import Sidebar from "./_shared/side-bar/Sidebar";
 import styles from "./page.module.css";
 
 export default function Home() {

@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Sidebar from "@/app/_shared/Sidebar";
-import MainScreen from "@/app/_shared/MainScreen";
+import Sidebar from "@/app/_shared/side-bar/Sidebar";
+import MainScreen from "@/app/_shared/main-screen/MainScreen";
 import UpdateStudentSubmission from "./_components/UpdateStudentSubmission";
 import styles from "./page.module.css";
 

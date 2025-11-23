@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./page.module.css";
-import Sidebar from "@/app/_shared/Sidebar";
-import MainScreen from "@/app/_shared/MainScreen";
+import Sidebar from "@/app/_shared/side-bar/Sidebar";
+import MainScreen from "@/app/_shared/main-screen/MainScreen";
 import DisplayAllClassOptions from "./_components/DisplayAllClassOptions";
 
 const page = () => {
