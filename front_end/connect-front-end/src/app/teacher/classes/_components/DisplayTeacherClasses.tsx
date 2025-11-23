@@ -1,0 +1,48 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "../page.module.css";
+import {
+  Class,
+  fetchTeacherClasses,
+} from "../_utilites/fetch-teacher-classes/fetchTeacherClasses";
+
+const DisplayTeacherClasses = () => {
+  const router = useRouter();
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [error, setError] = useState<Error>();
+  const redirectToSpecificClass = (classId: string) => {
+    router.push("/classes/" + classId);
+  };
+
+  useEffect(() => {
+    fetchTeacherClasses()
+      .then((data) => setClasses(data))
+      .catch((error) => setError(error));
+  }, []);
+
+  if (error) {
+    return (
+      <div className={styles.PageNonContentContainer}>{error.message}</div>
+    );
+  }
+
+  return (
+    <div className={styles.DisplayClassesContainer}>
+      {classes.map((teacherClass) => (
+        <div
+          key={teacherClass.classId}
+          className={styles.DisplayClassesIndividualContainer}
+          onClick={() => redirectToSpecificClass(teacherClass.classId)}
+        >
+          <div>{teacherClass.courseName}</div>
+          <div>Grade: {teacherClass.studentGradeYear}</div>
+          <div>{new Date(teacherClass.createdAt).toDateString()}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default DisplayTeacherClasses;
