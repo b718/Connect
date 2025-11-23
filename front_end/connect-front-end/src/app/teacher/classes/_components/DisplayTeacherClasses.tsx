@@ -15,7 +15,7 @@ const DisplayTeacherClasses = () => {
   const [classes, setClasses] = useState<Class[]>([]);
   const [error, setError] = useState<Error>();
   const redirectToSpecificClass = (classId: string) => {
-    router.push("/classes/" + classId);
+    router.push("/teacher/classes/" + classId);
   };
 
   useEffect(() => {
