@@ -7,9 +7,11 @@ import {
   Class,
   fetchTeacherClasses,
 } from "../_utilites/fetch-teacher-classes/fetchTeacherClasses";
+import { useAuth } from "@clerk/nextjs";
 
 const DisplayTeacherClasses = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
   const [classes, setClasses] = useState<Class[]>([]);
   const [error, setError] = useState<Error>();
   const redirectToSpecificClass = (classId: string) => {
@@ -17,7 +19,7 @@ const DisplayTeacherClasses = () => {
   };
 
   useEffect(() => {
-    fetchTeacherClasses()
+    fetchTeacherClasses(getToken)
       .then((data) => setClasses(data))
       .catch((error) => setError(error));
   }, []);

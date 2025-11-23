@@ -14,9 +14,15 @@ type FetchClassesResponse = {
   data: Class[];
 };
 
-export async function fetchTeacherClasses() {
+export async function fetchTeacherClasses(getToken: any) {
+  const token = await getToken();
   const serverUrl = getServerUrl();
-  const classes = await fetch(serverUrl + "/classes");
+  const classes = await fetch(serverUrl + "/classes", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!classes.ok) {
     throw new Error(
