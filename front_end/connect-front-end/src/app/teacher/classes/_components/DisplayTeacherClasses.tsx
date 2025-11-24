@@ -17,6 +17,9 @@ const DisplayTeacherClasses = () => {
   const redirectToSpecificClass = (classId: string) => {
     router.push("/teacher/classes/" + classId);
   };
+  const redirectToCreateClassMenu = () => {
+    router.push("/teacher/classes/create");
+  };
 
   useEffect(() => {
     fetchTeacherClasses(getToken)
@@ -26,7 +29,9 @@ const DisplayTeacherClasses = () => {
 
   if (error) {
     return (
-      <div className={styles.PageNonContentContainer}>{error.message}</div>
+      <div className={styles.PageNonContentContainer}>
+        {"failed to fetch classes"}
+      </div>
     );
   }
 
@@ -35,7 +40,7 @@ const DisplayTeacherClasses = () => {
       {classes.map((teacherClass) => (
         <div
           key={teacherClass.classId}
-          className={styles.DisplayClassesIndividualContainer}
+          className={styles.IndividualClassContainer}
           onClick={() => redirectToSpecificClass(teacherClass.classId)}
         >
           <div>{teacherClass.courseName}</div>
@@ -43,6 +48,12 @@ const DisplayTeacherClasses = () => {
           <div>{new Date(teacherClass.createdAt).toDateString()}</div>
         </div>
       ))}
+      <div
+        className={styles.CreateClassContainer}
+        onClick={redirectToCreateClassMenu}
+      >
+        Create a new class
+      </div>
     </div>
   );
 };
