@@ -24,7 +24,7 @@ const DisplayClassTab: FC<DisplayClassTabProps> = ({
       }`}
       onClick={() => setTabValue(tabValue)}
     >
-      {tabDisplayValue} {count && `(${count})`}
+      {tabDisplayValue} {count !== undefined && `(${count})`}
     </div>
   );
 };

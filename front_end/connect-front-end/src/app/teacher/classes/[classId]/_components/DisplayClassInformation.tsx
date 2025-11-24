@@ -89,10 +89,10 @@ const DisplayClassInformation = () => {
           />
         )}
         {activeTab === "Students" && (
-          <DisplayTeachersInformation teachers={classInformation.teachers} />
+          <DisplayStudentsInformation students={classInformation.students} />
         )}
         {activeTab === "Teachers" && (
-          <DisplayStudentsInformation students={classInformation.students} />
+          <DisplayTeachersInformation teachers={classInformation.teachers} />
         )}
         {activeTab === "Create Test" && (
           <DisplayCreateTestInformation classId={classId} />
