@@ -9,7 +9,8 @@
   background-color: white;
 }
 
-.DisplayClassesIndividualContainer {
+.IndividualClassContainer,
+.CreateClassContainer {
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -18,8 +19,17 @@
   transition: all 1s ease-in-out;
 }
 
-.DisplayClassesIndividualContainer:hover {
+.IndividualClassContainer:hover,
+.CreateClassContainer:hover {
   box-shadow: 0 2px 8px rgba(0, 255, 183, 0.06);
+}
+
+.CreateClassContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
 }
 
 /* Page Section */

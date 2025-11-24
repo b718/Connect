@@ -1,0 +1,34 @@
+/* DisplayCreateNewClassForm Section */
+.CreateNewClassFormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.CreateNewClassFormInnerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Page Section */
+.PageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.PageNonContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100vh;
+}
