@@ -23,4 +23,6 @@ export default function createStudentSubmissionQueue(
       resources: [studentSubmissionQueue.queueArn],
     })
   );
+
+  return studentSubmissionQueue;
 }
