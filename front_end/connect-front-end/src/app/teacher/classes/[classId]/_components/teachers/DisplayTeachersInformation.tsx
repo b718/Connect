@@ -20,7 +20,7 @@ const DisplayTeachersInformation: FC<DisplayTeachersInformationProps> = ({
       </thead>
 
       <tbody>
-        {teachers.map((teacher) => (
+        {teachers?.map((teacher) => (
           <tr key={teacher.teacherId}>
             <td>{teacher.teacherId}</td>
             <td>{teacher.firstName}</td>

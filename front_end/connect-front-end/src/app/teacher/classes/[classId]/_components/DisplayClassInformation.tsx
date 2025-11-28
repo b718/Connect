@@ -63,14 +63,14 @@ const DisplayClassInformation = () => {
           activeTabValue={activeTab}
           tabValue={"Students"}
           tabDisplayValue={"Students"}
-          count={classInformation?.students.length}
+          count={classInformation?.students?.length}
           setTabValue={setActiveTab}
         />
         <DisplayClassTab
           activeTabValue={activeTab}
           tabValue={"Teachers"}
           tabDisplayValue={"Teachers"}
-          count={classInformation?.teachers.length}
+          count={classInformation?.teachers?.length}
           setTabValue={setActiveTab}
         />
         <DisplayClassTab
