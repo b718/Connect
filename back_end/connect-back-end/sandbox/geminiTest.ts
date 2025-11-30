@@ -1,8 +1,20 @@
 import { GoogleGenAI } from "@google/genai";
 import { readFileSync } from "fs";
 import * as dotenv from "dotenv";
+import * as fs from "fs";
+import path from "path";
 
 dotenv.config();
+
+const studentSubmissionInstruction = fs.readFileSync(
+  path.join(__dirname, "llm-instructions/student-submission.txt"),
+  "utf-8"
+);
+
+const answerKeyInstruction = fs.readFileSync(
+  path.join(__dirname, "llm-instructions/answer-key.txt"),
+  "utf-8"
+);
 
 const gemini = new GoogleGenAI({});
 const base64ImageFile = readFileSync("./homework_sample.jpg", {
@@ -43,20 +55,7 @@ async function main() {
         },
       },
       {
-        text: `
-        In this case, this is the student submission.
-
-        Ensure these requirements are met:
-        - They MUST show their work to receieve full marks.
-        - If they do not explicitly highlight their answer, that is okay we do not want to deduct marks for that.
-        - Please match the answers to the answer key, even if the answer key is wrong it does not matter,
-          we want it to be a direct match.
-
-        Your Job:
-        - Output their grade, for example if there are seven questions and they got six right, output 6/7.
-        
-        Thanks!
-        `,
+        text: studentSubmissionInstruction,
       },
     ],
   };
@@ -70,22 +69,26 @@ async function main() {
         },
       },
       {
-        text: `
-        In this case, this is the answer key.
-
-        Your Job:
-        - This is the answer key to the problem set, when marking the 'student' submissions
-          please us this as reference. 
-        
-        Thanks!
-        `,
+        text: answerKeyInstruction,
       },
     ],
   };
 
   const response = await gemini.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.5-pro",
     contents: [studentSubmission, answerKeyContent],
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          grade: { type: "NUMBER" },
+          confident: { type: "BOOLEAN" },
+          reasoning: { type: "STRING" },
+        },
+        required: ["grade", "confident"],
+      },
+    },
   });
 
   console.log(response.text);
