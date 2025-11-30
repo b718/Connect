@@ -4,7 +4,10 @@ import createTestsBucket from "../resources/s3/answerKeyBucket";
 import createFetchTestFromTestsBucketLambda from "../resources/lambda/fetch-test-from-tests-bucket-lambda/fetchTestFromTestsBucketLambda";
 import uploadTestToTestsBucketLambda from "../resources/lambda/upload-test-to-tests-bucket-lambda/uploadTestToTestsBucketLambda";
 import createStudentSubmissionSqsQueue from "../resources/sqs/createStudentSubmissionQueue";
-import fetchStudentSubmissionFromQueueLambda from "../resources/lambda/fetch-student-submission-from-queue-lambda/fetchStudentSubmissionFromQueue";
+import fetchStudentSubmissionFromQueueLambda from "../resources/lambda/fetch-student-submission-from-queue-lambda/fetchStudentSubmissionFromQueueLambda";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export class ConnectStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

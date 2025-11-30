@@ -18,7 +18,7 @@ export default function fetchStudentSubmissionFromQueueLambda(
     "connect-fetch-student-submission-from-queue-lambda";
   const fetchStudentSubmissionFromQueueDockerAssetPath = join(
     __dirname,
-    "../../../../back_end/connect-back-end/serverless"
+    "../../../../../back_end/connect-back-end"
   );
 
   const fetchStudentSubmissionFromQueueDockerImage =
@@ -33,8 +33,15 @@ export default function fetchStudentSubmissionFromQueueLambda(
     {
       code: fetchStudentSubmissionFromQueueDockerImage,
       architecture: Architecture.X86_64,
-      timeout: Duration.seconds(30),
+      timeout: Duration.seconds(60),
       memorySize: 1024,
+      environment: {
+        DATABASE_URL: process.env.DATABASE_URL ?? "",
+        STUDENT_SUBMISSION_QUEUE_URL:
+          process.env.STUDENT_SUBMISSION_QUEUE_URL ?? "",
+        PRE_SIGNED_LAMBDA_URL: process.env.PRE_SIGNED_LAMBDA_URL ?? "",
+        GEMINI_API_KEY: process.env.GEMINI_API_KEY ?? "",
+      },
     }
   );
 
