@@ -31,7 +31,9 @@ const DisplayStudentClasses = () => {
 
   if (error) {
     return (
-      <div>{`an error occured while fetching the student classes: ${error.message}`}</div>
+      <div
+        className={styles.PageNonContentContainer}
+      >{`an error occured while fetching the student classes: ${error.message}`}</div>
     );
   }
 
