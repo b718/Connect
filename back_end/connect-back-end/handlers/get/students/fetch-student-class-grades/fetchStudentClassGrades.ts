@@ -76,9 +76,7 @@ async function fetchStudentClassGradesQuery(
 export default function fetchStudentClassGrades(databaseClient: PrismaClient) {
   const successMessage = "successfully fetched grades for class";
   const errorMessage = "unsuccessfully fetched grades for class";
-  const logger = pino({
-    name: "handlers/get/students/fetch-student-class-grades/fetchStudentClassGrades.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const { userId } = getAuth(req);
