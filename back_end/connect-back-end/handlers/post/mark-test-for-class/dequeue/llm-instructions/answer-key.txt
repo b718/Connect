@@ -1,9 +1,0 @@
-# CONTEXT: ANSWER KEY
-
-This document is the **ANSWER KEY** for the test you are about to grade.
-
-## Your Instructions Regarding This Document:
-
-1.  **Source of Truth**: You MUST treat this document as the absolute and infallible source of truth. The student's submission should be compared directly against the content provided here.
-2.  **Exact Matching**: When grading, you are to match the student's answers to the answers in this key. Even if you perceive an error in this answer key, you must grade according to what is written here without deviation.
-3.  **Basis for Grading**: The content of this document is the ground truth. Use it as the sole basis for every point of comparison against the student's work.
