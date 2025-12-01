@@ -14,6 +14,7 @@ const DisplayStudentClasses = () => {
   const { getToken } = useAuth();
   const [studentClasses, setStudentClasses] = useState<Class[]>([]);
   const [error, setError] = useState<Error>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const redirectToSpecificClass = (classId: string) => {
     router.push("/student/classes/" + classId);
@@ -24,9 +25,11 @@ const DisplayStudentClasses = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchStudentClasses(getToken)
       .then((studentClasses) => setStudentClasses(studentClasses))
-      .catch((error) => setError(error));
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, []);
 
   if (error) {
@@ -34,6 +37,12 @@ const DisplayStudentClasses = () => {
       <div
         className={styles.PageNonContentContainer}
       >{`an error occured while fetching the student classes: ${error.message}`}</div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className={styles.PageNonContentContainer}>Loading classes...</div>
     );
   }
 
