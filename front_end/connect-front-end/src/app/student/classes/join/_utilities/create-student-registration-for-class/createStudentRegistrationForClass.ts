@@ -13,7 +13,7 @@ export async function createStudentRegistrationForClass(
 ) {
   const serverUrl = getServerUrl();
   const createStudentRegistrationForClass = await fetch(
-    serverUrl + `/classes/${classId}/students/${studentId}/join/class`,
+    serverUrl + `/student/classes/${classId}/students/${studentId}/join/class`,
     {
       method: "POST",
       headers: {

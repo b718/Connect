@@ -42,18 +42,24 @@ export async function fetchAllClassOptions() {
     throw new Error(`Failed to fetch all classes`);
   }
 
-  return response.data.map((avaliableClass) => {
-    let label = `${avaliableClass.courseName} - `;
-    if (avaliableClass.teachers.length > 0) {
-      const teacher = avaliableClass.teachers[0];
-      label += teacher.firstName + " " + teacher.lastName;
-    }
+  return response.data.map((availableClass) =>
+    formatAvailableClassOptions(availableClass)
+  );
+}
 
-    const option: Option = {
-      value: avaliableClass.classId,
-      label: label,
-    };
+function formatAvailableClassOptions(availableClass: Class) {
+  const delimiter = "-";
+  let label = `${availableClass.courseName} ${delimiter} `;
 
-    return option;
-  });
+  if (availableClass.teachers.length > 0) {
+    const teacher = availableClass.teachers[0];
+    label += teacher.firstName + " " + teacher.lastName;
+  }
+
+  const option: Option = {
+    value: availableClass.classId,
+    label: label,
+  };
+
+  return option;
 }
