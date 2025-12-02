@@ -27,7 +27,9 @@ const ViewStudentSubmission = () => {
 
   if (error) {
     return (
-      <div className={styles.PageNonContentContainer}>{error.message}</div>
+      <div className={styles.PageNonContentContainer}>
+        {`An error occured while trying to view your submission: ${error.message}`}
+      </div>
     );
   }
 

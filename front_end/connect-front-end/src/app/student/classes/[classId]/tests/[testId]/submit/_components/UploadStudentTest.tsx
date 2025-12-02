@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useRef, useState } from "react";
-import { uploadStudentSubmission } from "../_utilities/upload-student-submissio/uploadStudentSubmission";
+import { uploadStudentSubmission } from "../_utilities/upload-student-submission/uploadStudentSubmission";
 import { uploadStudentSubmissionEvent } from "../_utilities/upload-student-submission-event/publishStudentSubmissionEvent";
 import { UserIdContext } from "@/app/_shared/user-id/UserIdContext";
 import { useParams } from "next/navigation";
@@ -65,7 +65,7 @@ const UploadStudentTest = () => {
 
   if (error) {
     return (
-      <div className={styles.UploadStudentTestContainer}>
+      <div className={styles.PageNonContentContainer}>
         {`Something went wrong, please try again, ${error.message}`}
       </div>
     );

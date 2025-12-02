@@ -33,7 +33,7 @@ const DisplayStudentSubmission: FC<DisplayStudentSubmissionProps> = ({
 
   if (error || !studentSubmissionFileBytes) {
     return (
-      <div>
+      <div className={styles.PageNonContentContainer}>
         {`Error occured while rendering ${studentSubmissionFile.name}`}
         {error && error.message}
       </div>

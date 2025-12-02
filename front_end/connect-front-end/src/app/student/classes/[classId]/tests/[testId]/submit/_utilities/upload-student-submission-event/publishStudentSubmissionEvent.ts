@@ -19,7 +19,7 @@ export async function uploadStudentSubmissionEvent(
 
   if (!studentSubmissionEvent.ok) {
     throw new Error(
-      "an error occured during the student submission, please try again"
+      `Request failed: ${studentSubmissionEvent.status} ${studentSubmissionEvent.statusText}. Could not parse response body.`
     );
   }
 }

@@ -16,7 +16,7 @@ export async function uploadStudentSubmission(
 
   if (!uploadedStudentSubmission.ok) {
     throw new Error(
-      "unable to upload student submission, please try again thanks"
+      `Request failed: ${uploadedStudentSubmission.status} ${uploadedStudentSubmission.statusText}. Could not parse response body.`
     );
   }
 
