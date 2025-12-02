@@ -57,9 +57,7 @@ export default function getClassInformation(databaseClient: PrismaClient) {
     "successfully queried all students and teachers for a specific class";
   const errorMessage =
     "unsuccessfully queried all students and teachers for a specific class";
-  const logger = pino({
-    name: "handlers/get-class-information/getClassInformation.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;

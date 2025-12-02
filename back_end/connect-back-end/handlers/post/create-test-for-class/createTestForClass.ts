@@ -104,9 +104,7 @@ function createCreateTestForClassRequestResponse(
 export default function createTestForClass(databaseClient: PrismaClient) {
   const successMessage = "successfully created test for all students in class";
   const errorMessage = "unsuccessfully created test for all students in class";
-  const logger = pino({
-    name: "handlers/post/create-test-for-class/createTestForClass.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;

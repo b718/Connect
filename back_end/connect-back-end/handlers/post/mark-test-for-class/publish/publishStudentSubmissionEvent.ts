@@ -49,9 +49,7 @@ export default function publishStudentSubmissionEvent(
 ) {
   const successMessage = "successfully published student submission event";
   const errorMessage = "unsuccessfully published student submission event";
-  const logger = pino({
-    name: "handlers/post/mark-test-for-class/publish/publishStudentSubmissionEvent.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;

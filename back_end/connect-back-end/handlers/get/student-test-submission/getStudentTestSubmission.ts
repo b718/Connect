@@ -29,9 +29,7 @@ export default function getStudentTestSubmission() {
     "successfully fetched student test submission for specific class";
   const errorMessage =
     "unsuccessfully fetched student test submission for specific class";
-  const logger = pino({
-    name: "handlers/get/student-test-submission/getStudentTestSubmission.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;

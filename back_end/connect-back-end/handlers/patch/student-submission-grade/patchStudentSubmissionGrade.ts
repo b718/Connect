@@ -56,9 +56,7 @@ export default function patchStudentSubmissionGrade(
 ) {
   const successMessage = "successfully updated grade for student";
   const errorMessage = "unsuccessfully updated grade for student";
-  const logger = pino({
-    name: "handlers/patch/student-submission-grade/patchStudentSubmissionGrade.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const studentId = req.params.studentId;

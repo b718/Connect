@@ -121,9 +121,7 @@ export default function getAllStudentGradesForClass(
     "successfully queried all student grades for specific class";
   const errorMessage =
     "unsuccessfully queried all student grades for specific class";
-  const logger = pino({
-    name: "handlers/get-all-student-grades-for-class/getAllStudentGradesForClass.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;

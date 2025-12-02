@@ -48,9 +48,7 @@ export default function getStudentGradesForTest(databaseClient: PrismaClient) {
     "successfully queried student grades for specific test";
   const errorMessage =
     "unsuccessfully queried student grades for specific testId";
-  const logger = pino({
-    name: "handlers/get-student-grades-for-test/getStudentGradesForTest.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const testId = req.params.testId;

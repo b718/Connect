@@ -27,9 +27,7 @@ function createStudentTestUploadPresignedUrlResponse(
 export default function studentTestUploadPresignedUrl() {
   const successMessage = "successfully marked test for student";
   const errorMessage = "unsuccessfully marked test for student";
-  const logger = pino({
-    name: "handlers/post/mark-test-for-class/markStudentTest.ts",
-  });
+  const logger = pino({ name: __filename });
 
   return async function (req: Request, res: Response) {
     const classId = req.params.classId;
