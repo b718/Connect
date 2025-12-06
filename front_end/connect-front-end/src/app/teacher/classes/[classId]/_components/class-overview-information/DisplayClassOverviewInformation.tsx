@@ -20,7 +20,7 @@ const DisplayClassOverviewInformation: FC<DisplayOverviewInformationProps> = ({
     studentId: string,
     testId: string
   ) => {
-    return `/classes/${classId}/students/${studentId}/tests/${testId}`;
+    return `/teacher/classes/${classId}/students/${studentId}/tests/${testId}`;
   };
 
   return (
