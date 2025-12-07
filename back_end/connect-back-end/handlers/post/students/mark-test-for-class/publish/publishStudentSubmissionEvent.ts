@@ -10,39 +10,6 @@ type PublishStudentSubmissionEventResponse = {
   message: string;
 };
 
-function createPublishStudentSubmissionEventResponse(
-  statusCode: number,
-  message: string,
-  res: Response
-) {
-  const response: PublishStudentSubmissionEventResponse = {
-    statusCode: statusCode,
-    message: message,
-  };
-
-  res.status(statusCode).json(response);
-}
-
-async function markStudentSubmissionAsSubmittedQuery(
-  databaseClient: PrismaClient,
-  testId: string,
-  studentId: string
-) {
-  const studentSubmission = await databaseClient.studentTestResults.update({
-    where: {
-      testsTableId_studentsTableId: {
-        testsTableId: testId,
-        studentsTableId: studentId,
-      },
-    },
-    data: {
-      isSubmitted: true,
-    },
-  });
-
-  return studentSubmission;
-}
-
 export default function publishStudentSubmissionEvent(
   databaseClient: PrismaClient,
   studentSubmissionQueueClient: SQSClient
@@ -70,30 +37,45 @@ export default function publishStudentSubmissionEvent(
         studentId
       );
 
-      logger.info({
-        classId: classId,
-        testId: testId,
-        message: successMessage,
-      });
+      logger.info({ classId: classId, testId: testId }, successMessage);
 
-      createPublishStudentSubmissionEventResponse(
-        StatusCodes.OK,
-        successMessage,
-        res
-      );
+      createResponse(StatusCodes.OK, successMessage, res);
     } catch (error) {
-      logger.info({
-        classId: classId,
-        testId: testId,
-        err: error,
-        message: errorMessage,
-      });
-
-      createPublishStudentSubmissionEventResponse(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        errorMessage,
-        res
+      logger.info(
+        { classId: classId, testId: testId, err: error },
+        errorMessage
       );
+
+      createResponse(StatusCodes.INTERNAL_SERVER_ERROR, errorMessage, res);
     }
   };
+}
+
+function createResponse(statusCode: number, message: string, res: Response) {
+  const response: PublishStudentSubmissionEventResponse = {
+    statusCode: statusCode,
+    message: message,
+  };
+
+  res.status(statusCode).json(response);
+}
+
+async function markStudentSubmissionAsSubmittedQuery(
+  databaseClient: PrismaClient,
+  testId: string,
+  studentId: string
+) {
+  const studentSubmission = await databaseClient.studentTestResults.update({
+    where: {
+      testsTableId_studentsTableId: {
+        testsTableId: testId,
+        studentsTableId: studentId,
+      },
+    },
+    data: {
+      isSubmitted: true,
+    },
+  });
+
+  return studentSubmission;
 }

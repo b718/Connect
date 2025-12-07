@@ -1,13 +1,5 @@
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 
-function createTestSubmissionMessage(
-  classId: string,
-  studentId: string,
-  testId: string
-) {
-  return `Test '${testId}' submission for student '${studentId}' on ${new Date()} for class '${classId}'`;
-}
-
 export async function publishStudentSubmissionToQueue(
   classId: string,
   studentId: string,
@@ -42,4 +34,12 @@ export async function publishStudentSubmissionToQueue(
       `faced error: ${error} when trying to submit student submission`
     );
   }
+}
+
+function createTestSubmissionMessage(
+  classId: string,
+  studentId: string,
+  testId: string
+) {
+  return `Test '${testId}' submission for student '${studentId}' on ${new Date()} for class '${classId}'`;
 }
