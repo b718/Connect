@@ -9,21 +9,6 @@ type GetStudentTestSubmissionResponse = {
   presignedUrl: string;
 };
 
-function createGetStudentTestSubmissionResponse(
-  statusCode: number,
-  message: string,
-  presignedUrl: string,
-  res: Response
-) {
-  const response: GetStudentTestSubmissionResponse = {
-    statusCode: statusCode,
-    message: message,
-    presignedUrl: presignedUrl,
-  };
-
-  res.status(statusCode).json(response);
-}
-
 export default function getStudentTestSubmission() {
   const successMessage =
     "successfully fetched student test submission for specific class";
@@ -43,35 +28,39 @@ export default function getStudentTestSubmission() {
         testId
       );
 
-      logger.info({
-        classId: classId,
-        studentId: studentId,
-        testId: testId,
-        message: successMessage,
-      });
+      logger.info(
+        { classId: classId, studentId: studentId, testId: testId },
+        successMessage
+      );
 
-      createGetStudentTestSubmissionResponse(
+      createResponse(
         StatusCodes.OK,
         successMessage,
         response.presignedUrl,
         res
       );
     } catch (error) {
-      if (error instanceof Error) {
-        logger.error({
-          classId: classId,
-          studentId: studentId,
-          testId: testId,
-          message: error.message,
-        });
-      }
-
-      createGetStudentTestSubmissionResponse(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        errorMessage,
-        "",
-        res
+      logger.error(
+        { classId: classId, studentId: studentId, testId: testId, err: error },
+        errorMessage
       );
+
+      createResponse(StatusCodes.INTERNAL_SERVER_ERROR, errorMessage, "", res);
     }
   };
+}
+
+function createResponse(
+  statusCode: number,
+  message: string,
+  presignedUrl: string,
+  res: Response
+) {
+  const response: GetStudentTestSubmissionResponse = {
+    statusCode: statusCode,
+    message: message,
+    presignedUrl: presignedUrl,
+  };
+
+  res.status(statusCode).json(response);
 }

@@ -1,4 +1,7 @@
-export default async function getAnswerKeyUrl(classId: string, testId: string) {
+export default async function fetchAnswerKeyUrl(
+  classId: string,
+  testId: string
+) {
   const presignedLambdaUrl = process.env.PRE_SIGNED_LAMBDA_URL!;
   const fetchedAnswerKey = await fetch(presignedLambdaUrl!, {
     method: "POST",
