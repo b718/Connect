@@ -21,7 +21,7 @@ type FetchStudentGrades = {
 export async function fetchClassGrades(classId: string) {
   const serverUrl = getServerUrl();
   const fetchedClassGrades = await fetch(
-    serverUrl + `/classes/${classId}/grades`
+    serverUrl + `/teacher/classes/${classId}/grades`
   );
 
   if (!fetchedClassGrades.ok) {

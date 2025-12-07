@@ -10,7 +10,7 @@ type CreatedTest = {
 export async function createTestForClass(classId: string, testName: string) {
   const serverUrl = getServerUrl();
   const createdTest = await fetch(
-    serverUrl + `/classes/${classId}/tests/create`,
+    serverUrl + `/teacher/classes/${classId}/tests/create`,
     {
       method: "POST",
       headers: {

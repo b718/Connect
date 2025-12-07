@@ -29,7 +29,7 @@ type FetchClassResponse = {
 
 export async function fetchClass(classId: string) {
   const serverUrl = getServerUrl();
-  const fetchedClass = await fetch(serverUrl + `/classes/${classId}`);
+  const fetchedClass = await fetch(serverUrl + `/teacher/classes/${classId}`);
 
   if (!fetchedClass.ok) {
     throw Error(

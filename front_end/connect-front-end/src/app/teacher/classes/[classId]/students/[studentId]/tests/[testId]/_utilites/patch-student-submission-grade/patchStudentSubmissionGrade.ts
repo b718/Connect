@@ -13,7 +13,7 @@ export async function patchStudentSubmissionGrade(
 ) {
   const serverUrl = getServerUrl();
   const studentSubmissionGradeUpdate = await fetch(
-    serverUrl + `/students/${studentId}/tests/${testId}/submissions`,
+    serverUrl + `/teacher/students/${studentId}/tests/${testId}/submissions`,
     {
       method: "PATCH",
       headers: {
@@ -31,8 +31,7 @@ export async function patchStudentSubmissionGrade(
     );
   }
 
-  let response: PatchStudentSubmissionGradeResponse =
-    await studentSubmissionGradeUpdate.json();
+  let response: PatchStudentSubmissionGradeResponse;
   try {
     response = await studentSubmissionGradeUpdate.json();
   } catch (error) {

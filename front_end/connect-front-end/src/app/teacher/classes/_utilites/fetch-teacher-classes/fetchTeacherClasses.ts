@@ -17,7 +17,7 @@ type FetchClassesResponse = {
 export async function fetchTeacherClasses(getToken: any) {
   const token = await getToken();
   const serverUrl = getServerUrl();
-  const classes = await fetch(serverUrl + "/classes", {
+  const classes = await fetch(serverUrl + "/teacher/classes", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

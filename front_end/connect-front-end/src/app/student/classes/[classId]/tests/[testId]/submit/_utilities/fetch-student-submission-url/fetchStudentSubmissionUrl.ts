@@ -14,7 +14,7 @@ export async function fetchStudentSubmissionUrl(
   const serverUrl = getServerUrl();
   const studentSubmissionUrl = await fetch(
     serverUrl +
-      `/classes/${classId}/students/${studentId}/tests/${testId}/grade`
+      `/student/classes/${classId}/students/${studentId}/tests/${testId}/grade`
   );
   let response: FetchStudentSubmissionUrlResponse;
 

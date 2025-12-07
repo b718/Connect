@@ -8,7 +8,7 @@ export async function uploadStudentSubmissionEvent(
   const serverUrl = getServerUrl();
   const studentSubmissionEvent = await fetch(
     serverUrl +
-      `/classes/${classId}/students/${studentId}/tests/${testId}/grade`,
+      `/student/classes/${classId}/students/${studentId}/tests/${testId}/grade`,
     {
       method: "POST",
       headers: {
