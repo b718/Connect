@@ -20,3 +20,15 @@
   border-radius: 12px;
   width: 100%;
 }
+
+@media (min-width: 400px) {
+  .MainScreenContainer {
+    width: 100vw;
+  }
+}
+
+@media (min-width: 600px) {
+  .MainScreenContainer {
+    width: calc(100vw - 250px);
+  }
+}
