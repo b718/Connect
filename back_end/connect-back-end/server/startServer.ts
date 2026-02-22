@@ -1,65 +1,38 @@
 import type { Express } from "express";
 import { PrismaClient } from "@prisma/client";
+import { clerkMiddleware } from "@clerk/express";
+import getStudentTestSubmission from "../handlers/get/student-submission/getStudentTestSubmission";
+import createNewUser from "../handlers/post/create-new-user/createNewUser";
 import pino from "pino";
 import express from "express";
 import cors from "cors";
-import getStudentGradesForTest from "../handlers/get/student-grades-for-test/getStudentGradesForTest";
-import getAllStudentGradesForClass from "../handlers/get/all-student-grades-for-class/getAllStudentGradesForClass";
-import getClassInformation from "../handlers/get/class-information/getClassInformation";
-import getClasses from "../handlers/get/classes/getClasses";
-import createTestForClass from "../handlers/post/create-test-for-class/createTestForClass";
-import studentTestUploadPresignedUrl from "../handlers/get/student-test-upload-presigned-url/studentTestUploadPresignedUrl";
-import publishStudentSubmissionEvent from "../handlers/post/mark-test-for-class/publish/publishStudentSubmissionEvent";
-import dequeueStudentSubmissionEvent from "../handlers/post/mark-test-for-class/dequeue/dequeueStudentSubmissionEvent";
-import getStudentTestSubmission from "../handlers/get/student-test-submission/getStudentTestSubmission";
-import patchStudentSubmissionGrade from "../handlers/patch/student-submission-grade/patchStudentSubmissionGrade";
+import studentRouter from "./routers/student/student.routes";
+import teacherRouter from "./routers/teacher/teacher.route";
 
 export default async function startServer(databaseClient: PrismaClient) {
-  const logger = pino({
-    name: "connected-back-end/index.ts",
-  });
-
+  const SERVER_PORT = process.env.SERVER_PORT || 3003;
   const app: Express = express();
+  const logger = pino({ name: __filename });
+
   app.use(cors());
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(clerkMiddleware());
 
-  const SERVER_PORT = process.env.SERVER_PORT || 3003;
+  // student handlers
+  app.use("/student", studentRouter(databaseClient));
+
+  // teacher handlers
+  app.use("/teacher", teacherRouter(databaseClient));
 
   // get handlers
-  app.get("/classes", getClasses(databaseClient));
-  app.get("/classes/:classId", getClassInformation(databaseClient));
-  app.get(
-    "/classes/:classId/grades",
-    getAllStudentGradesForClass(databaseClient)
-  );
-  app.get(
-    "/classes/:classId/grades/tests/:testId",
-    getStudentGradesForTest(databaseClient)
-  );
-  app.get(
-    "/classes/:classId/students/:studentId/tests/:testId/grade",
-    studentTestUploadPresignedUrl()
-  );
   app.get(
     "/classes/:classId/students/:studentId/tests/:testId/submissions",
-    getStudentTestSubmission()
+    getStudentTestSubmission(),
   );
 
   // post handlers
-  app.post(
-    "/classes/:classId/tests/create",
-    createTestForClass(databaseClient)
-  );
-  app.post(
-    "/classes/:classId/students/:studentId/tests/:testId/grade",
-    publishStudentSubmissionEvent()
-  );
-
-  // patch handlers
-  app.patch(
-    "/students/:studentId/tests/:testId/submissions",
-    patchStudentSubmissionGrade(databaseClient)
-  );
+  app.post("/authenticate", createNewUser(databaseClient));
 
   app.listen(SERVER_PORT, () => {
     logger.info(`starting server at port: ${SERVER_PORT}`);
