@@ -11,19 +11,19 @@ type GradedTest = {
 
 const studentSubmissionInstruction = fs.readFileSync(
   path.join(__dirname, "../llm-instructions/student-submission.txt"),
-  "utf-8"
+  "utf-8",
 );
 
 const answerKeyInstruction = fs.readFileSync(
   path.join(__dirname, "../llm-instructions/answer-key.txt"),
-  "utf-8"
+  "utf-8",
 );
 
 async function encodeSubmission(submissionUrl: string): Promise<string> {
   const fetchedSubmission = await fetch(submissionUrl);
   if (!fetchedSubmission.ok) {
     throw new Error(
-      `Failed to fetch submission from ${submissionUrl}, status: ${fetchedSubmission.status}`
+      `Failed to fetch submission from ${submissionUrl}, status: ${fetchedSubmission.status}`,
     );
   }
   const arrayBuffer = await fetchedSubmission.arrayBuffer();
@@ -33,7 +33,8 @@ async function encodeSubmission(submissionUrl: string): Promise<string> {
 async function fetchEncodedSubmissions(
   classId: string,
   studentId: string,
-  testId: string
+  testId: string,
+  logger: Logger,
 ) {
   const presignedLambdaUrl = process.env.PRE_SIGNED_LAMBDA_URL!;
   const fetchAnswerKey = fetch(presignedLambdaUrl, {
@@ -63,6 +64,14 @@ async function fetchEncodedSubmissions(
     fetchStudentSubmission,
   ]);
 
+  logger.info(
+    {
+      answerKeyResponseOk: answerKeyResponse.ok,
+      studentSubmissionResponseOk: studentSubmissionResponse.ok,
+    },
+    "presigned url responses",
+  );
+
   if (!answerKeyResponse.ok) {
     throw new Error("Failed to answer key file");
   }
@@ -74,9 +83,9 @@ async function fetchEncodedSubmissions(
   const [answerKey, studentSubmission] = await Promise.all(
     [answerKeyResponse, studentSubmissionResponse].map(async (response) => {
       const presignedUrl = await response.json();
-      const encodedSubmission = encodeSubmission(presignedUrl);
+      const encodedSubmission = encodeSubmission(presignedUrl.presignedUrl);
       return encodedSubmission;
-    })
+    }),
   );
 
   return [answerKey, studentSubmission];
@@ -123,7 +132,7 @@ export async function gradeTest(
   classId: string,
   studentId: string,
   testId: string,
-  logger: Logger
+  logger: Logger,
 ) {
   logger.info({
     studentId: studentId,
@@ -132,10 +141,10 @@ export async function gradeTest(
     message: "grading test for student",
   });
   const [encodedAnswerKey, encodedStudentSubmission] =
-    await fetchEncodedSubmissions(classId, studentId, testId);
+    await fetchEncodedSubmissions(classId, studentId, testId, logger);
 
   const response = await geminiClient.models.generateContent({
-    model: "gemini-2.5-pro",
+    model: "gemini-3-flash-preview",
     contents: [
       createAnswerKeyRequest(encodedAnswerKey),
       createStudentSubmissionRequest(encodedStudentSubmission),
@@ -166,14 +175,16 @@ export async function gradeTest(
 
   const gradedTest: GradedTest = JSON.parse(response.text);
   logger.info({ response: response.text }, "llm response");
-  logger.info({
-    studentId: studentId,
-    testId: testId,
-    classId: classId,
-    grade: `${gradedTest.grade.toFixed(2)}%`,
-    confident: gradedTest.confident,
-    message: "successfully graded test for student",
-  });
+  logger.info(
+    {
+      studentId: studentId,
+      testId: testId,
+      classId: classId,
+      grade: `${gradedTest.grade.toFixed(2)}%`,
+      confident: gradedTest.confident,
+    },
+    "successfully graded test for student",
+  );
 
   return gradedTest;
 }

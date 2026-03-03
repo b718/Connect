@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { Logger } from "pino";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, StudentTestResults } from "@prisma/client";
 import { gradeTest } from "./gradeTest";
 import { SQSRecord } from "aws-lambda";
 
@@ -8,7 +8,7 @@ export async function processStudentSubmission(
   databaseClient: PrismaClient,
   geminiClient: GoogleGenAI,
   studentSubmissionMessage: SQSRecord,
-  logger: Logger
+  logger: Logger,
 ) {
   const successMessage = "succesfully graded student submission";
   const failureMessage = "unsuccesfully graded student submission";
@@ -27,7 +27,7 @@ export async function processStudentSubmission(
         studentId: studentId,
         testId: testId,
       },
-      "processing student submission"
+      "processing student submission",
     );
 
     const gradeStudentSubmission = await gradeTest(
@@ -35,19 +35,15 @@ export async function processStudentSubmission(
       classId,
       studentId,
       testId,
-      logger
+      logger,
     );
 
-    const data: Prisma.StudentTestResultsUpdateInput = {
-      testGrade: gradeStudentSubmission.grade,
-    };
-
-    if (!gradeStudentSubmission.confident) {
-      data.manualInterventionRequired = true;
-    }
-
     await databaseClient.studentTestResults.update({
-      data,
+      data: {
+        isGraded: true,
+        manualInterventionRequired: gradeStudentSubmission.confident,
+        testGrade: gradeStudentSubmission.grade,
+      },
       where: {
         testsTableId_studentsTableId: {
           testsTableId: testId,
@@ -62,7 +58,7 @@ export async function processStudentSubmission(
         testId: testId,
         classId: classId,
       },
-      successMessage
+      successMessage,
     );
   } catch (error) {
     logger.error(
@@ -72,7 +68,7 @@ export async function processStudentSubmission(
         classId: classId,
         err: error,
       },
-      failureMessage
+      failureMessage,
     );
     throw error;
   }
