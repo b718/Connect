@@ -14,7 +14,7 @@ type CreateNewClassResponse = {
 export async function createNewClass(
   getToken: any,
   courseName: string,
-  studentGradeYear: string
+  studentGradeYear: string,
 ) {
   const token = await getToken();
   const serverUrl = getServerUrl();
