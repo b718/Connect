@@ -18,6 +18,26 @@ const DisplayStudentClassGrades: FC<DisplayStudentClassGradesProps> = ({
   const createStudentSubmissionUrl = (testId: string) => {
     return `/student/classes/${classId}/tests/${testId}/submit`;
   };
+  const TestResult = (studentGrade: StudentGrade) => {
+    console.log(studentGrade);
+    if (studentGrade.isGraded) {
+      return (
+        <Link href={createStudentSubmissionViewUrl(studentGrade.testId)}>
+          {studentGrade.testGrade.toFixed(2)}%
+        </Link>
+      );
+    }
+
+    if (studentGrade.isSubmitted) {
+      return <div>Grading in-progress</div>;
+    }
+
+    return (
+      <Link href={createStudentSubmissionUrl(studentGrade.testId)}>
+        Submission Required
+      </Link>
+    );
+  };
 
   return (
     <table className={styles.StudentClassGradesTable}>
@@ -32,19 +52,7 @@ const DisplayStudentClassGrades: FC<DisplayStudentClassGradesProps> = ({
         {studentGrades.map((studentGrade) => (
           <tr>
             <td>{studentGrade.testName}</td>
-            <td>
-              {studentGrade.isSubmitted ? (
-                <Link
-                  href={createStudentSubmissionViewUrl(studentGrade.testId)}
-                >
-                  {studentGrade.testGrade.toFixed(2)}%
-                </Link>
-              ) : (
-                <Link href={createStudentSubmissionUrl(studentGrade.testId)}>
-                  Submission Required
-                </Link>
-              )}
-            </td>
+            <td>{TestResult(studentGrade)}</td>
           </tr>
         ))}
       </tbody>

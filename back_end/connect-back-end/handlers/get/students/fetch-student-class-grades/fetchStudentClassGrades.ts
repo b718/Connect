@@ -9,6 +9,7 @@ type StudentClassGrades = {
   testName: string;
   testGrade: number;
   isSubmitted: boolean;
+  isGraded: boolean;
   testCreationDate: Date;
 };
 
@@ -22,7 +23,7 @@ function createFetchStudentClassGradesResponse(
   statusCode: number,
   message: string,
   data: StudentClassGrades[],
-  res: Response
+  res: Response,
 ) {
   const response: FetchStudentClassGradesResponse = {
     statusCode: statusCode,
@@ -36,7 +37,7 @@ function createFetchStudentClassGradesResponse(
 async function fetchStudentClassGradesQuery(
   databaseClient: PrismaClient,
   userId: string,
-  classId: string
+  classId: string,
 ) {
   const studentClassGrades = await databaseClient.studentTestResults.findMany({
     where: {
@@ -52,6 +53,7 @@ async function fetchStudentClassGradesQuery(
       testGrade: true,
       createdAt: true,
       isSubmitted: true,
+      isGraded: true,
     },
     orderBy: {
       test: {
@@ -66,6 +68,7 @@ async function fetchStudentClassGradesQuery(
       testName: studentClassGrade.test.testName,
       testGrade: studentClassGrade.testGrade,
       isSubmitted: studentClassGrade.isSubmitted,
+      isGraded: studentClassGrade.isGraded,
       testCreationDate: studentClassGrade.test.createdAt,
     };
 
@@ -86,20 +89,20 @@ export default function fetchStudentClassGrades(databaseClient: PrismaClient) {
       if (!userId) {
         logger.info(
           { classId: classId },
-          "user is not authorized to access endpoint"
+          "user is not authorized to access endpoint",
         );
         return createFetchStudentClassGradesResponse(
           StatusCodes.OK,
           successMessage,
           [],
-          res
+          res,
         );
       }
 
       const studentClassGrades = await fetchStudentClassGradesQuery(
         databaseClient,
         userId,
-        classId
+        classId,
       );
 
       logger.info(
@@ -107,26 +110,26 @@ export default function fetchStudentClassGrades(databaseClient: PrismaClient) {
           userId: userId,
           classId: classId,
         },
-        successMessage
+        successMessage,
       );
 
       createFetchStudentClassGradesResponse(
         StatusCodes.OK,
         successMessage,
         studentClassGrades,
-        res
+        res,
       );
     } catch (error) {
       logger.error(
         { userId: userId, classId: classId, err: error },
-        errorMessage
+        errorMessage,
       );
 
       createFetchStudentClassGradesResponse(
         StatusCodes.INTERNAL_SERVER_ERROR,
         errorMessage,
         [],
-        res
+        res,
       );
     }
   };
