@@ -98,6 +98,7 @@ model StudentTestResults {
   testGrade                  Float
   manualInterventionRequired Boolean @default(false)
   isSubmitted                Boolean @default(false)
+  isGraded                   Boolean @default(false)
 
   createdAt DateTime @default(now())
 
