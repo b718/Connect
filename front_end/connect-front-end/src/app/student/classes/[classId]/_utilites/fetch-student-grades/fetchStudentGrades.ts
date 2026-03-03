@@ -5,6 +5,7 @@ export type StudentGrade = {
   testName: string;
   testGrade: number;
   isSubmitted: boolean;
+  isGraded: boolean;
   testCreationDate: string;
 };
 
@@ -23,7 +24,7 @@ export async function fetchStudentGrades(getToken: any, classId: string) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
   let response: FetchStudentGradesResponse;
 
@@ -31,13 +32,13 @@ export async function fetchStudentGrades(getToken: any, classId: string) {
     response = await studentGrades.json();
   } catch (e) {
     throw new Error(
-      `Request failed: ${studentGrades.status} ${studentGrades.statusText}. Could not parse response body.`
+      `Request failed: ${studentGrades.status} ${studentGrades.statusText}. Could not parse response body.`,
     );
   }
 
   if (!studentGrades.ok) {
     throw new Error(
-      `error occured while fetching student class grades: ${response.message}`
+      `error occured while fetching student class grades: ${response.message}`,
     );
   }
 

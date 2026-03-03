@@ -28,7 +28,7 @@ type FetchAllClassesResponse = {
 
 export async function fetchAllClassOptions() {
   const serverUrl = getServerUrl();
-  const allClasses = await fetch(serverUrl + "/classes");
+  const allClasses = await fetch(serverUrl + "/classes/all");
 
   if (!allClasses.ok) {
     throw new Error(`Failed to fetch all classes: ${allClasses.statusText}`);
@@ -43,7 +43,7 @@ export async function fetchAllClassOptions() {
   }
 
   return response.data.map((availableClass) =>
-    formatAvailableClassOptions(availableClass)
+    formatAvailableClassOptions(availableClass),
   );
 }
 
