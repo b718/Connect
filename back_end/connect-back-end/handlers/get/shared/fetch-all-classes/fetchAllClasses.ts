@@ -22,13 +22,14 @@ export default function fetchAllClasses(databaseClient: PrismaClient) {
   const successMessage = "successfully queried all classes";
   const errorMessage = "unsuccessfully queried all classes";
   const logger = pino({ name: __filename });
-  const response: FetchAllClassesResponse = {
-    statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-    message: errorMessage,
-    data: [],
-  };
 
   return async function (_req: Request, res: Response) {
+    const response: FetchAllClassesResponse = {
+      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      message: errorMessage,
+      data: [],
+    };
+
     try {
       const classes = await fetchAllClassesQuery(databaseClient);
       logger.info({ totalClasses: classes.length }, successMessage);

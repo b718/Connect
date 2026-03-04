@@ -8,6 +8,7 @@ import express from "express";
 import cors from "cors";
 import studentRouter from "./routers/student/student.routes";
 import teacherRouter from "./routers/teacher/teacher.route";
+import fetchAllClasses from "../handlers/get/shared/fetch-all-classes/fetchAllClasses";
 
 export default async function startServer(databaseClient: PrismaClient) {
   const SERVER_PORT = process.env.SERVER_PORT || 3003;
@@ -26,6 +27,7 @@ export default async function startServer(databaseClient: PrismaClient) {
   app.use("/teacher", teacherRouter(databaseClient));
 
   // get handlers
+  app.get("/classes/all", fetchAllClasses(databaseClient));
   app.get(
     "/classes/:classId/students/:studentId/tests/:testId/submissions",
     getStudentTestSubmission(),
