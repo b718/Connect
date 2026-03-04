@@ -37,8 +37,8 @@ const UploadStudentTest = () => {
         uploadStudentSubmission(
           uploadStudentSubmissionUrl,
           studentSubmission,
-          testId
-        )
+          testId,
+        ),
       )
       .then(() => uploadStudentSubmissionEvent(classId, studentId, testId))
       .catch((error) => setError(error))
@@ -86,7 +86,7 @@ const UploadStudentTest = () => {
           Upload New Submission
         </button>
 
-        <p>{studentSubmission && studentSubmission.name}</p>
+        {studentSubmission && <p>{studentSubmission.name}</p>}
         {studentSubmission && (
           <button onClick={handleRemoveFile}>Remove Submission</button>
         )}

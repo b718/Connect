@@ -32,8 +32,8 @@ const DisplayCreateTestInformation: FC<DisplayCreateTestInformationProps> = ({
         uploadNewTestFile(
           createdTest.presignedUrl,
           testFile,
-          createdTest.testId
-        )
+          createdTest.testId,
+        ),
       )
       .then(() => setIsTestCreated(true))
       .catch((error) => {
@@ -105,7 +105,7 @@ const DisplayCreateTestInformation: FC<DisplayCreateTestInformationProps> = ({
           <button type="button" onClick={handleUploadFile}>
             Upload New Test File
           </button>
-          <p>{testFile && testFile.name}</p>
+          {testFile && <p>{testFile.name}</p>}
           {testFile && (
             <button type="button" onClick={handleRemoveFile}>
               Remove File

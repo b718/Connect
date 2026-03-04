@@ -80,6 +80,10 @@
   align-items: center;
 }
 
+.CreateTestInnerFormContainer p {
+  margin-bottom: 0.5rem;
+}
+
 .CreateTestFileInput {
   display: none;
 }

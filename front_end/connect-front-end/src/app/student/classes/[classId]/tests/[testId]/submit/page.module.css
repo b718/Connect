@@ -21,6 +21,10 @@
   align-items: center;
 }
 
+.UploadStudentTestFileSubmissionContainer p {
+  margin-bottom: 0.5rem;
+}
+
 .UploadStudentTestFileSubmissionInput {
   display: none;
 }
@@ -35,6 +39,14 @@
   margin-left: 1rem;
   margin-right: 1rem;
   gap: 1rem;
+
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  background-color: white;
+  border: 1px solid black;
 }
 
 /* Page Section */
