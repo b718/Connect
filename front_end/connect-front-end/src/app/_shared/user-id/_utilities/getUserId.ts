@@ -1,4 +1,5 @@
 import getServerUrl from "../../../../../utilities/fetchApiUrl";
+import { GetToken } from "../../../../../utilities/getTokenType";
 
 type GetUserIdResponse = {
   statusCode: number;
@@ -6,7 +7,7 @@ type GetUserIdResponse = {
   userId: string;
 };
 
-export async function getUserId(getToken: Function) {
+export async function getUserId(getToken: GetToken) {
   const token = await getToken();
   const serverUrl = getServerUrl();
   const userId = await fetch(serverUrl + "/authenticate", {

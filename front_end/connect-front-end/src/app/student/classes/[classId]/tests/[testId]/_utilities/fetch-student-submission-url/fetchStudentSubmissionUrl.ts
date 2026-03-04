@@ -1,4 +1,5 @@
 import getServerUrl from "../../../../../../../../../utilities/fetchApiUrl";
+import { GetToken } from "../../../../../../../../../utilities/getTokenType";
 
 type FetchStudentSubmissionUrlResponse = {
   presignedUrl: string;
@@ -8,7 +9,7 @@ export async function fetchStudentSubmissionUrl(
   classId: string,
   studentId: string,
   testId: string,
-  getToken: Function,
+  getToken: GetToken,
 ) {
   const token = await getToken();
   const serverUrl = getServerUrl();
