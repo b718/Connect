@@ -37,7 +37,7 @@ export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
       return;
     }
 
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("connect_userId");
     if (userId) {
       setUserId(userId);
       setLoading(false);
@@ -47,7 +47,7 @@ export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
     getUserId(getToken)
       .then((userId) => {
         setUserId(userId);
-        localStorage.setItem("userId", userId);
+        localStorage.setItem("connect_userId", userId);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));

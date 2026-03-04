@@ -17,7 +17,8 @@ type FetchClassesResponse = {
 export async function fetchTeacherClasses(getToken: any) {
   const token = await getToken();
   const serverUrl = getServerUrl();
-  const classes = await fetch(serverUrl + "/teacher/classes", {
+  const teacherId = localStorage.getItem("connect_userId");
+  const classes = await fetch(serverUrl + `/teacher/classes/${teacherId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -26,7 +27,7 @@ export async function fetchTeacherClasses(getToken: any) {
 
   if (!classes.ok) {
     throw new Error(
-      `error occured while fetching classes: ${classes.statusText}`
+      `error occured while fetching classes: ${classes.statusText}`,
     );
   }
 
