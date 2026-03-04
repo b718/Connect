@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import getServerUrl from "../../../../../../utilities/fetchApiUrl";
+import { GetToken } from "../../../../../../utilities/getTokenType";
 
 export type Class = {
   classId: string;
@@ -14,7 +15,7 @@ type FetchClassesResponse = {
   data: Class[];
 };
 
-export async function fetchTeacherClasses(getToken: Function) {
+export async function fetchTeacherClasses(getToken: GetToken) {
   const token = await getToken();
   const serverUrl = getServerUrl();
   const teacherId = localStorage.getItem("connect_userId");

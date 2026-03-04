@@ -1,4 +1,5 @@
 import getServerUrl from "../../../../../../../utilities/fetchApiUrl";
+import { GetToken } from "../../../../../../../utilities/getTokenType";
 
 type CreateNewClassRequest = {
   courseName: string;
@@ -12,7 +13,7 @@ type CreateNewClassResponse = {
 };
 
 export async function createNewClass(
-  getToken: Function,
+  getToken: GetToken,
   courseName: string,
   studentGradeYear: string,
 ) {

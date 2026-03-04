@@ -1,4 +1,5 @@
 import getServerUrl from "../../../../../../utilities/fetchApiUrl";
+import { GetToken } from "../../../../../../utilities/getTokenType";
 
 export type Class = {
   classId: string;
@@ -13,7 +14,7 @@ type FetchStudentClassesResponse = {
   data: Class[];
 };
 
-export async function fetchStudentClasses(getToken: Function) {
+export async function fetchStudentClasses(getToken: GetToken) {
   const token = await getToken();
   const serverUrl = getServerUrl();
   const studentClasses = await fetch(serverUrl + `/student/classes`, {
