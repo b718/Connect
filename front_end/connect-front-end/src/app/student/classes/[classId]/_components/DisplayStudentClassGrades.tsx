@@ -49,8 +49,8 @@ const DisplayStudentClassGrades: FC<DisplayStudentClassGradesProps> = ({
       </thead>
 
       <tbody>
-        {studentGrades.map((studentGrade) => (
-          <tr>
+        {studentGrades.map((studentGrade, index) => (
+          <tr key={index}>
             <td>{studentGrade.testName}</td>
             <td>{TestResult(studentGrade)}</td>
           </tr>

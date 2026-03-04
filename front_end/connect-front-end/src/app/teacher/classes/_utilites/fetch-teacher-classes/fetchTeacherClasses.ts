@@ -14,7 +14,7 @@ type FetchClassesResponse = {
   data: Class[];
 };
 
-export async function fetchTeacherClasses(getToken: any) {
+export async function fetchTeacherClasses(getToken: Function) {
   const token = await getToken();
   const serverUrl = getServerUrl();
   const teacherId = localStorage.getItem("connect_userId");

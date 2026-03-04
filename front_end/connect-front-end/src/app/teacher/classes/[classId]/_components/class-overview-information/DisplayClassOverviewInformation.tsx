@@ -18,7 +18,7 @@ const DisplayClassOverviewInformation: FC<DisplayOverviewInformationProps> = ({
 }) => {
   const createStudentSubmissionViewUrl = (
     studentId: string,
-    testId: string
+    testId: string,
   ) => {
     return `/teacher/classes/${classId}/students/${studentId}/tests/${testId}`;
   };
@@ -30,8 +30,8 @@ const DisplayClassOverviewInformation: FC<DisplayOverviewInformationProps> = ({
           <th>Student Id</th>
           <th>First Name</th>
           <th>Last Name</th>
-          {classGrades.tests.map((test) => (
-            <th>
+          {classGrades.tests.map((test, index) => (
+            <th key={index}>
               {test.viewAnswerKeyUrl ? (
                 <a target={"_blank"} href={test.viewAnswerKeyUrl}>
                   {test.testName}
@@ -58,7 +58,7 @@ const DisplayClassOverviewInformation: FC<DisplayOverviewInformationProps> = ({
                   <Link
                     href={createStudentSubmissionViewUrl(
                       student.studentId,
-                      classGrades.tests[index].testId
+                      classGrades.tests[index].testId,
                     )}
                   >
                     {testGrade.grade.toFixed(2)}%

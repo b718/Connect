@@ -13,7 +13,7 @@ type FetchStudentClassesResponse = {
   data: Class[];
 };
 
-export async function fetchStudentClasses(getToken: any) {
+export async function fetchStudentClasses(getToken: Function) {
   const token = await getToken();
   const serverUrl = getServerUrl();
   const studentClasses = await fetch(serverUrl + `/student/classes`, {
@@ -27,13 +27,13 @@ export async function fetchStudentClasses(getToken: any) {
     response = await studentClasses.json();
   } catch (e) {
     throw new Error(
-      `Request failed: ${studentClasses.status} ${studentClasses.statusText}. Could not parse response body.`
+      `Request failed: ${studentClasses.status} ${studentClasses.statusText}. Could not parse response body.`,
     );
   }
 
   if (!studentClasses.ok) {
     throw new Error(
-      `error occured while fetching classes: ${response.message}`
+      `error occured while fetching classes: ${response.message}`,
     );
   }
 

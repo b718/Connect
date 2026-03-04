@@ -8,7 +8,7 @@ export async function fetchStudentSubmissionUrl(
   classId: string,
   studentId: string,
   testId: string,
-  getToken: any
+  getToken: Function,
 ) {
   const token = await getToken();
   const serverUrl = getServerUrl();
@@ -19,7 +19,7 @@ export async function fetchStudentSubmissionUrl(
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
   let response: FetchStudentSubmissionUrlResponse;
 
@@ -27,7 +27,7 @@ export async function fetchStudentSubmissionUrl(
     response = await fetchedStudentSubmission.json();
   } catch (e) {
     throw new Error(
-      `Request failed: ${fetchedStudentSubmission.status} ${fetchedStudentSubmission.statusText}. Could not parse response body.`
+      `Request failed: ${fetchedStudentSubmission.status} ${fetchedStudentSubmission.statusText}. Could not parse response body.`,
     );
   }
 

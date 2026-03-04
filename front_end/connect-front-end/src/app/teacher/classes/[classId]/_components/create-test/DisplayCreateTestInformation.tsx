@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useRef, useState } from "react";
 import DisplayUploadedTest from "./DisplayUploadedTest";
 import { createTestForClass } from "../../_utilities/create-test/createTestForClass";
 import { uploadNewTestFile } from "../../_utilities/create-test/uploadNewTestFile";
@@ -42,7 +42,7 @@ const DisplayCreateTestInformation: FC<DisplayCreateTestInformationProps> = ({
       .finally(() => setLoading(false));
   };
 
-  const handleFileUploadChange = (e: any) => {
+  const handleFileUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTestFile(undefined);
     if (e.target.files && e.target.files.length > 0) {
       setTestFile(e.target.files[0]);

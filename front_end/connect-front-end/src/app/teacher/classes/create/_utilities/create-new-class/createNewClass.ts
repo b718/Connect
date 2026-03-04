@@ -12,7 +12,7 @@ type CreateNewClassResponse = {
 };
 
 export async function createNewClass(
-  getToken: any,
+  getToken: Function,
   courseName: string,
   studentGradeYear: string,
 ) {

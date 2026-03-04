@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useContext, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { uploadStudentSubmission } from "../_utilities/upload-student-submission/uploadStudentSubmission";
 import { uploadStudentSubmissionEvent } from "../_utilities/upload-student-submission-event/publishStudentSubmissionEvent";
 import { UserIdContext } from "@/app/_shared/user-id/UserIdContext";
@@ -21,7 +27,7 @@ const UploadStudentTest = () => {
   const [error, setError] = useState<Error>();
   const studentSubmissionInputReference = useRef<HTMLInputElement>(null);
 
-  const handleStudentSubmission = (e: any) => {
+  const handleStudentSubmission = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!studentSubmission) {
       return;
@@ -45,7 +51,7 @@ const UploadStudentTest = () => {
       .finally(() => setLoading(false));
   };
 
-  const handleFileUploadChange = (e: any) => {
+  const handleFileUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
     setStudentSubmission(undefined);
     if (e.target.files && e.target.files.length > 0) {
       setStudentSubmission(e.target.files[0]);

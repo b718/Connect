@@ -63,7 +63,7 @@ const DisplayStudentClasses = () => {
         className={styles.JoinNewClassContainer}
         onClick={redirectToJoinClassesMenu}
       >
-        <div>Don't see your class? Click here to browse all classes!</div>
+        <div>Don&apos;t see your class? Click here to browse all classes.</div>
       </div>
     </div>
   );

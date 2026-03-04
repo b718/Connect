@@ -6,7 +6,7 @@ type GetUserIdResponse = {
   userId: string;
 };
 
-export async function getUserId(getToken: any) {
+export async function getUserId(getToken: Function) {
   const token = await getToken();
   const serverUrl = getServerUrl();
   const userId = await fetch(serverUrl + "/authenticate", {
@@ -22,7 +22,7 @@ export async function getUserId(getToken: any) {
     response = await userId.json();
   } catch (error) {
     throw new Error(
-      `Request failed: ${userId.status} ${userId.statusText}. Could not parse response body.`
+      `Request failed: ${userId.status} ${userId.statusText}. Could not parse response body.`,
     );
   }
 
