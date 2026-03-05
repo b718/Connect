@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext, useEffect, useState } from "react";
 
 import styles from "../page.module.css";
@@ -20,7 +22,7 @@ const ViewStudentSubmission = () => {
   useEffect(() => {
     fetchStudentSubmissionUrl(classId, studentId, testId, getToken)
       .then((studentSubmissionUrl) =>
-        setStudentSubmissionUrl(studentSubmissionUrl)
+        setStudentSubmissionUrl(studentSubmissionUrl),
       )
       .catch((error) => setError(error));
   });
