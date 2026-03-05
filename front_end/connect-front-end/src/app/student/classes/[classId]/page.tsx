@@ -4,6 +4,8 @@ import Sidebar from "@/app/_shared/side-bar/Sidebar";
 import MainScreen from "@/app/_shared/main-screen/MainScreen";
 import DisplayStudentClassInformation from "./_components/DisplayStudentClassInformation";
 
+export const runtime = "edge";
+
 const page = () => {
   return (
     <div className={styles.PageContainer}>

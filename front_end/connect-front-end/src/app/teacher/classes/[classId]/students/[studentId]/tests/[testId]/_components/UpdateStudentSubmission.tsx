@@ -1,3 +1,5 @@
+"use client";
+
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { fetchStudentSubmissionUrl } from "../_utilites/fetch-student-submission-url/fetchStudentSubmissionUrl";
@@ -18,7 +20,7 @@ const UpdateStudentSubmission = () => {
   useEffect(() => {
     fetchStudentSubmissionUrl(classId, studentId, testId)
       .then((studentSubmissionUrl) =>
-        setStudentSubmissionUrl(studentSubmissionUrl)
+        setStudentSubmissionUrl(studentSubmissionUrl),
       )
       .catch((error) => setError(error));
   }, []);

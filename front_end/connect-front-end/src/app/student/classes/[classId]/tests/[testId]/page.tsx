@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import MainScreen from "@/app/_shared/main-screen/MainScreen";
 import Sidebar from "@/app/_shared/side-bar/Sidebar";
