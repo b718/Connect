@@ -41,7 +41,7 @@ export async function processStudentSubmission(
     await databaseClient.studentTestResults.update({
       data: {
         isGraded: true,
-        manualInterventionRequired: gradeStudentSubmission.confident,
+        manualInterventionRequired: gradeStudentSubmission.confident ? false : true,
         testGrade: gradeStudentSubmission.grade,
       },
       where: {
