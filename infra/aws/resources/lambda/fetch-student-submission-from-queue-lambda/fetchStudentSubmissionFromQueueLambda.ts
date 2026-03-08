@@ -12,19 +12,19 @@ import { Duration } from "aws-cdk-lib";
 
 export default function fetchStudentSubmissionFromQueueLambda(
   connectStack: ConnectStack,
-  studentSubmissionQueue: Queue
+  studentSubmissionQueue: Queue,
 ) {
   const fetchStudentSubmissionFromQueueLambdaId =
     "connect-fetch-student-submission-from-queue-lambda";
   const fetchStudentSubmissionFromQueueDockerAssetPath = join(
     __dirname,
-    "../../../../../back_end/connect-back-end"
+    "../../../../../back_end/connect-back-end",
   );
 
   const fetchStudentSubmissionFromQueueDockerImage =
     DockerImageCode.fromImageAsset(
       fetchStudentSubmissionFromQueueDockerAssetPath,
-      { file: "Dockerfile" }
+      { file: "Dockerfile.handler" },
     );
 
   const fetchStudentSubmissionFromQueueLambda = new DockerImageFunction(
@@ -42,14 +42,14 @@ export default function fetchStudentSubmissionFromQueueLambda(
         PRE_SIGNED_LAMBDA_URL: process.env.PRE_SIGNED_LAMBDA_URL ?? "",
         GEMINI_API_KEY: process.env.GEMINI_API_KEY ?? "",
       },
-    }
+    },
   );
 
   fetchStudentSubmissionFromQueueLambda.addToRolePolicy(
     new PolicyStatement({
       actions: ["sqs:SendMessage", "sqs:ReceiveMessage"],
       resources: [studentSubmissionQueue.queueArn],
-    })
+    }),
   );
 
   const BATCH_SIZE = 10;
@@ -57,10 +57,10 @@ export default function fetchStudentSubmissionFromQueueLambda(
     studentSubmissionQueue,
     {
       batchSize: BATCH_SIZE,
-    }
+    },
   );
 
   fetchStudentSubmissionFromQueueLambda.addEventSource(
-    studentSubmissionQueueEventSource
+    studentSubmissionQueueEventSource,
   );
 }

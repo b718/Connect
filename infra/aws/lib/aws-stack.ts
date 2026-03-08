@@ -6,6 +6,7 @@ import uploadTestToTestsBucketLambda from "../resources/lambda/upload-test-to-te
 import createStudentSubmissionSqsQueue from "../resources/sqs/createStudentSubmissionQueue";
 import fetchStudentSubmissionFromQueueLambda from "../resources/lambda/fetch-student-submission-from-queue-lambda/fetchStudentSubmissionFromQueueLambda";
 import * as dotenv from "dotenv";
+import connectBackEndServerLambda from "../resources/lambda/connect-back-end-server/connectBackEndServerLambda";
 
 dotenv.config();
 
@@ -17,5 +18,6 @@ export class ConnectStack extends cdk.Stack {
     uploadTestToTestsBucketLambda(this, testsBuckets.bucketName);
     const studentSubmissionQueue = createStudentSubmissionSqsQueue(this);
     fetchStudentSubmissionFromQueueLambda(this, studentSubmissionQueue);
+    connectBackEndServerLambda(this);
   }
 }
