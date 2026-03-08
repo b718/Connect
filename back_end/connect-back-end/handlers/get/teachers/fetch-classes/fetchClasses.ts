@@ -32,11 +32,7 @@ export default function fetchClasses(databaseClient: PrismaClient) {
           "user is not authorized to access endpoint",
         );
         response.statusCode = StatusCodes.UNAUTHORIZED;
-        return sendResponse<FetchClassesResponse>(
-          res,
-          response.statusCode,
-          response,
-        );
+        return;
       }
 
       const classes = await fetchClassesQuery(databaseClient, teacherId);

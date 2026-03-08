@@ -18,13 +18,16 @@ type FetchClassesResponse = {
 export async function fetchTeacherClasses(getToken: GetToken) {
   const token = await getToken();
   const serverUrl = getServerUrl();
-  const teacherId = localStorage.getItem("connect_userId");
-  const classes = await fetch(serverUrl + `/teacher/classes/${teacherId}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const userId = localStorage.getItem("connect_userId");
+  const classes = await fetch(
+    serverUrl + `/teacher/classes/teacher/${userId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
   if (!classes.ok) {
     throw new Error(

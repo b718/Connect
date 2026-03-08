@@ -11,8 +11,8 @@ export default function teacherRouter(databaseClient: PrismaClient) {
   const router = Router();
 
   //get handlers
-  router.get("/classes/:teacherId", fetchClasses(databaseClient));
   router.get("/classes/:classId", fetchClass(databaseClient));
+  router.get("/classes/teacher/:teacherId", fetchClasses(databaseClient));
   router.get(
     "/classes/:classId/grades",
     fetchAllStudentGradesForClass(databaseClient),
