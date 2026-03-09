@@ -43,6 +43,7 @@ export async function processStudentSubmission(
         isGraded: true,
         manualInterventionRequired: gradeStudentSubmission.confident ? false : true,
         testGrade: gradeStudentSubmission.grade,
+        gradeResultReasoning: gradeStudentSubmission.reasoning
       },
       where: {
         testsTableId_studentsTableId: {

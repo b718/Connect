@@ -6,7 +6,7 @@ import { Logger } from "pino";
 type GradedTest = {
   grade: number;
   confident: boolean;
-  reasoning?: string;
+  reasoning: string;
 };
 
 const studentSubmissionInstruction = fs.readFileSync(
@@ -158,7 +158,7 @@ export async function gradeTest(
           confident: { type: "BOOLEAN" },
           reasoning: { type: "STRING" },
         },
-        required: ["grade", "confident"],
+        required: ["grade", "confident", "reasoning"],
       },
     },
   });
