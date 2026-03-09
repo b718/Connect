@@ -11,6 +11,7 @@ type StudentClassGrades = {
   isSubmitted: boolean;
   isGraded: boolean;
   testCreationDate: Date;
+  manualInterventionRequired: boolean;
 };
 
 type FetchStudentClassGradesResponse = {
@@ -54,6 +55,7 @@ async function fetchStudentClassGradesQuery(
       createdAt: true,
       isSubmitted: true,
       isGraded: true,
+      manualInterventionRequired: true,
     },
     orderBy: {
       test: {
@@ -70,6 +72,7 @@ async function fetchStudentClassGradesQuery(
       isSubmitted: studentClassGrade.isSubmitted,
       isGraded: studentClassGrade.isGraded,
       testCreationDate: studentClassGrade.test.createdAt,
+      manualInterventionRequired: studentClassGrade.manualInterventionRequired,
     };
 
     return response;
