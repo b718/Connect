@@ -1,7 +1,7 @@
 import getServerUrl from "../../../../../../../../../../../utilities/fetchApiUrl";
 
 export type StudentSubmissionGradeInformation = {
-  currentTestGrade: number;
+  testGrade: number;
   gradeResultReasoning: string;
 };
 

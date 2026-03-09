@@ -47,7 +47,7 @@ const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
       {studentSubmissionGradeInformation && (
         <div>
           <div>
-            Current Grade: {studentSubmissionGradeInformation.currentTestGrade}
+            Current Grade: {studentSubmissionGradeInformation.testGrade}
           </div>
           <div>
             Current Grade Reasoning:
