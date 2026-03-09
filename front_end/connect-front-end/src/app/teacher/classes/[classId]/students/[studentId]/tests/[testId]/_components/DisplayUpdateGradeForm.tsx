@@ -1,15 +1,18 @@
 import React, { FC, FormEvent, useState } from "react";
 import { patchStudentSubmissionGrade } from "../_utilites/patch-student-submission-grade/patchStudentSubmissionGrade";
 import styles from "../page.module.css";
+import { StudentSubmissionGradeInformation } from "../_utilites/fetch-student-submission-grade-information/fetchStudentSubmissionGradeInformation";
 
 interface DisplayUpdateGradeFormProps {
   studentId: string;
   testId: string;
+  studentSubmissionGradeInformation: StudentSubmissionGradeInformation | null;
 }
 
 const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
   studentId,
   testId,
+  studentSubmissionGradeInformation,
 }) => {
   const DEFAULT_GRADE = -1;
   const [grade, setGrade] = useState<number>(DEFAULT_GRADE);
@@ -41,6 +44,17 @@ const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
   const UpdateGradeForm = (
     <>
       <label htmlFor="gradeInput">Update Grade (%)</label>
+      {studentSubmissionGradeInformation && (
+        <div>
+          <div>
+            Current Grade: {studentSubmissionGradeInformation.currentTestGrade}
+          </div>
+          <div>
+            Current Grade Reasoning:
+            {studentSubmissionGradeInformation.gradeResultReasoning}
+          </div>
+        </div>
+      )}
       <input
         id="gradeInput"
         type={"number"}

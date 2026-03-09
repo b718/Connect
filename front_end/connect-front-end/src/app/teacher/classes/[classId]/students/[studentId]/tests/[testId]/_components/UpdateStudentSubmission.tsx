@@ -6,6 +6,10 @@ import { fetchStudentSubmissionUrl } from "../_utilites/fetch-student-submission
 import styles from "../page.module.css";
 import DisplayStudentSubmission from "./DisplayStudentSubmission";
 import DisplayUpdateGradeForm from "./DisplayUpdateGradeForm";
+import {
+  fetchStudentSubmissionGradeInformation,
+  StudentSubmissionGradeInformation,
+} from "../_utilites/fetch-student-submission-grade-information/fetchStudentSubmissionGradeInformation";
 
 const UpdateStudentSubmission = () => {
   const router = useRouter();
@@ -15,15 +19,23 @@ const UpdateStudentSubmission = () => {
   const testId = params.testId as string;
 
   const [studentSubmissionUrl, setStudentSubmissionUrl] = useState<string>("");
+  const [
+    studentSubmissionGradeInformation,
+    setStudentSubmissionGradeInformation,
+  ] = useState<StudentSubmissionGradeInformation | null>(null);
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    fetchStudentSubmissionUrl(classId, studentId, testId)
-      .then((studentSubmissionUrl) =>
-        setStudentSubmissionUrl(studentSubmissionUrl),
-      )
+    Promise.all([
+      fetchStudentSubmissionUrl(classId, studentId, testId),
+      fetchStudentSubmissionGradeInformation(studentId, testId),
+    ])
+      .then(([studentSubmissionUrl, studentSubmissionGradeInformation]) => {
+        setStudentSubmissionUrl(studentSubmissionUrl);
+        setStudentSubmissionGradeInformation(studentSubmissionGradeInformation);
+      })
       .catch((error) => setError(error));
-  }, []);
+  }, [classId, studentId, testId]);
 
   if (error) {
     return (
@@ -48,7 +60,11 @@ const UpdateStudentSubmission = () => {
       <button onClick={router.back}>{"Back"}</button>
       <div className={styles.UpdateStudentSubmissionFormContainer}>
         <DisplayStudentSubmission studentSubmissionUrl={studentSubmissionUrl} />
-        <DisplayUpdateGradeForm studentId={studentId} testId={testId} />
+        <DisplayUpdateGradeForm
+          studentId={studentId}
+          testId={testId}
+          studentSubmissionGradeInformation={studentSubmissionGradeInformation}
+        />
       </div>
     </div>
   );
