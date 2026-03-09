@@ -97,6 +97,7 @@ model StudentTestResults {
 
   testGrade                  Float
   manualInterventionRequired Boolean @default(false)
+  gradeResultReasoning       String  @default("")
   isSubmitted                Boolean @default(false)
   isGraded                   Boolean @default(false)
 
