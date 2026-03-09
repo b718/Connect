@@ -10,12 +10,13 @@ import React, {
 import { uploadStudentSubmission } from "../_utilities/upload-student-submission/uploadStudentSubmission";
 import { uploadStudentSubmissionEvent } from "../_utilities/upload-student-submission-event/publishStudentSubmissionEvent";
 import { UserIdContext } from "@/app/_shared/user-id/UserIdContext";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetchStudentSubmissionUrl } from "../_utilities/fetch-student-submission-url/fetchStudentSubmissionUrl";
 import styles from "../page.module.css";
 import DisplayStudentSubmission from "./DisplayStudentSubmission";
 
 const UploadStudentTest = () => {
+  const router = useRouter();
   const params = useParams();
   const classId = params.classId as string;
   const testId = params.testId as string;
@@ -114,10 +115,17 @@ const UploadStudentTest = () => {
       {uploadStudentSubmissionUrl?.length > 0 ? (
         <div>Submission submitted succesfully</div>
       ) : (
-        <>
-          <DisplayStudentSubmission studentSubmissionFile={studentSubmission} />
-          {StudentSubmissionForm}
-        </>
+        <div className={styles.StudentSubmissionContainer}>
+          <button onClick={router.back} type={"button"}>
+            {"Back"}
+          </button>
+          <div className={styles.DisplayStudentSubmissionContainer}>
+            <DisplayStudentSubmission
+              studentSubmissionFile={studentSubmission}
+            />
+            {StudentSubmissionForm}
+          </div>
+        </div>
       )}
     </form>
   );

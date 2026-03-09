@@ -8,6 +8,7 @@ export type StudentGrade = {
   isSubmitted: boolean;
   isGraded: boolean;
   testCreationDate: string;
+  manualInterventionRequired: boolean;
 };
 
 type FetchStudentGradesResponse = {

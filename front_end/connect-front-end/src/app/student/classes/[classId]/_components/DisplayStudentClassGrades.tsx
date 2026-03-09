@@ -19,7 +19,6 @@ const DisplayStudentClassGrades: FC<DisplayStudentClassGradesProps> = ({
     return `/student/classes/${classId}/tests/${testId}/submit`;
   };
   const TestResult = (studentGrade: StudentGrade) => {
-    console.log(studentGrade);
     if (studentGrade.isGraded) {
       return (
         <Link href={createStudentSubmissionViewUrl(studentGrade.testId)}>
@@ -28,7 +27,7 @@ const DisplayStudentClassGrades: FC<DisplayStudentClassGradesProps> = ({
       );
     }
 
-    if (studentGrade.isSubmitted) {
+    if (studentGrade.isSubmitted || studentGrade.manualInterventionRequired) {
       return <div>Grading in-progress</div>;
     }
 
