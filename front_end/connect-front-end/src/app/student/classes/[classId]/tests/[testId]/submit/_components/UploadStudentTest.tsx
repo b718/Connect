@@ -112,21 +112,21 @@ const UploadStudentTest = () => {
       onSubmit={handleStudentSubmission}
       className={styles.UploadStudentTestContainer}
     >
-      {uploadStudentSubmissionUrl?.length > 0 ? (
-        <div>Submission submitted succesfully</div>
-      ) : (
-        <div className={styles.StudentSubmissionContainer}>
-          <button onClick={router.back} type={"button"}>
-            {"Back"}
-          </button>
+      <div className={styles.StudentSubmissionContainer}>
+        <button onClick={router.back} type={"button"}>
+          {"Back"}
+        </button>
+        {uploadStudentSubmissionUrl?.length > 0 ? (
+          <div>Submission submitted succesfully</div>
+        ) : (
           <div className={styles.DisplayStudentSubmissionContainer}>
             <DisplayStudentSubmission
               studentSubmissionFile={studentSubmission}
             />
             {StudentSubmissionForm}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </form>
   );
 };
