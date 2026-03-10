@@ -41,21 +41,28 @@ const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
     );
   }
 
+  const StudentSubmissionGradeInformation = () => {
+    if (!studentSubmissionGradeInformation) {
+      return <></>;
+    }
+
+    return (
+      <div className={styles.StudentSubmissionGradeInformationContainer}>
+        <div>
+          Current Grade:
+          <p>{studentSubmissionGradeInformation.testGrade.toFixed(2)}%</p>
+        </div>
+        <div>
+          Reasoning:
+          <p>{studentSubmissionGradeInformation.gradeResultReasoning}</p>
+        </div>
+      </div>
+    );
+  };
+
   const UpdateGradeForm = (
     <>
       <label htmlFor="gradeInput">Update Grade (%)</label>
-      {studentSubmissionGradeInformation && (
-        <div>
-          <div>
-            Current Grade:{" "}
-            {studentSubmissionGradeInformation.testGrade.toFixed(2)}%
-          </div>
-          <div>
-            Current Grade Reasoning:
-            {studentSubmissionGradeInformation.gradeResultReasoning}
-          </div>
-        </div>
-      )}
       <input
         id="gradeInput"
         type={"number"}
@@ -65,7 +72,6 @@ const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
         min={0}
         max={100}
       />
-
       {loading ? (
         <div>Updating grade...</div>
       ) : (
@@ -77,18 +83,21 @@ const DisplayUpdateGradeForm: FC<DisplayUpdateGradeFormProps> = ({
   );
 
   return (
-    <form
-      className={styles.UpdateGradeFormContainer}
-      onSubmit={handleGradeChange}
-    >
-      {newGrade === DEFAULT_GRADE ? (
-        <div className={styles.UpdatedGradeContainer}>{UpdateGradeForm}</div>
-      ) : (
-        <div className={styles.UpdatedGradeContainer}>
-          <span>Grade successfully updated to {newGrade.toFixed(2)}%</span>
-        </div>
-      )}
-    </form>
+    <div>
+      <form
+        className={styles.UpdateGradeFormContainer}
+        onSubmit={handleGradeChange}
+      >
+        {newGrade === DEFAULT_GRADE ? (
+          <div className={styles.UpdatedGradeContainer}>{UpdateGradeForm}</div>
+        ) : (
+          <div className={styles.UpdatedGradeContainer}>
+            <span>Grade successfully updated to {newGrade.toFixed(2)}%</span>
+          </div>
+        )}
+      </form>
+      <StudentSubmissionGradeInformation />
+    </div>
   );
 };
 
