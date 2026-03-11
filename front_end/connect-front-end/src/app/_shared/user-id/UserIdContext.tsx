@@ -24,7 +24,7 @@ export const UserIdContext = createContext<UserIdContextType>({
 });
 
 export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
-  const { getToken, isLoaded } = useAuth();
+  const { getToken, isLoaded, userId: clerkUserId } = useAuth();
   const [userId, setUserId] = useState<string>("");
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,25 +33,26 @@ export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isLoaded || !clerkUserId) {
       return;
     }
 
-    const userId = localStorage.getItem("connect_userId");
-    if (userId) {
-      setUserId(userId);
+    const cacheKey = `connect_userId:${clerkUserId}`;
+    const cachedUserId = localStorage.getItem(cacheKey);
+    if (cachedUserId) {
+      setUserId(cachedUserId);
       setLoading(false);
       return;
     }
 
     getUserId(getToken)
-      .then((userId) => {
-        setUserId(userId);
-        localStorage.setItem("connect_userId", userId);
+      .then((newUserId) => {
+        setUserId(newUserId);
+        localStorage.setItem(cacheKey, newUserId);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [getToken, isLoaded]);
+  }, [getToken, isLoaded, clerkUserId]);
 
   if (error) {
     return (
