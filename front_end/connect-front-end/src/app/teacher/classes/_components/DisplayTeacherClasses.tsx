@@ -13,6 +13,7 @@ const DisplayTeacherClasses = () => {
   const router = useRouter();
   const { getToken } = useAuth();
   const [classes, setClasses] = useState<Class[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error>();
   const redirectToSpecificClass = (classId: string) => {
     router.push("/teacher/classes/" + classId);
@@ -22,10 +23,18 @@ const DisplayTeacherClasses = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchTeacherClasses(getToken)
       .then((data) => setClasses(data))
-      .catch((error) => setError(error));
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.PageNonContentContainer}>{"Loading ..."}</div>
+    );
+  }
 
   if (error) {
     return (
