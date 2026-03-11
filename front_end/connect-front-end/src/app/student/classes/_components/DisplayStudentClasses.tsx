@@ -14,7 +14,7 @@ const DisplayStudentClasses = () => {
   const { getToken } = useAuth();
   const [studentClasses, setStudentClasses] = useState<Class[]>([]);
   const [error, setError] = useState<Error>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const redirectToSpecificClass = (classId: string) => {
     router.push("/student/classes/" + classId);
@@ -25,7 +25,6 @@ const DisplayStudentClasses = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchStudentClasses(getToken)
       .then((studentClasses) => setStudentClasses(studentClasses))
       .catch((error) => setError(error))
