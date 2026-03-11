@@ -12,7 +12,7 @@ type Students = {
   testGrades: TestGrade[];
 };
 
-type Tests = {
+export type Tests = {
   testId: string;
   testName: string;
   viewAnswerKeyUrl: string;

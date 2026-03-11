@@ -14,8 +14,9 @@ import styles from "../page.module.css";
 import DisplayClassTab from "./class-information-tabs/DisplayClassTab";
 import { fetchClassGrades } from "../_utilities/fetch-class-grades/fetchClassGrades";
 import { CategorizedClassGrades } from "../_utilities/fetch-class-grades/groupGradesByStudent";
+import DisplayTestsInformation from "./tests/DisplayTestsInformation";
 
-export type Tab = "Students" | "Teachers" | "Overview" | "Create Test";
+export type Tab = "Students" | "Teachers" | "Overview" | "Tests" | "Create Test";
 
 const DisplayClassInformation = () => {
   const params = useParams();
@@ -75,6 +76,12 @@ const DisplayClassInformation = () => {
         />
         <DisplayClassTab
           activeTabValue={activeTab}
+          tabValue={"Tests"}
+          tabDisplayValue={"Tests"}
+          setTabValue={setActiveTab}
+        />
+        <DisplayClassTab
+          activeTabValue={activeTab}
           tabValue={"Create Test"}
           tabDisplayValue={"Create Test"}
           setTabValue={setActiveTab}
@@ -93,6 +100,9 @@ const DisplayClassInformation = () => {
         )}
         {activeTab === "Teachers" && (
           <DisplayTeachersInformation teachers={classInformation.teachers} />
+        )}
+        {activeTab === "Tests" && (
+          <DisplayTestsInformation tests={classGrades.tests} />
         )}
         {activeTab === "Create Test" && (
           <DisplayCreateTestInformation classId={classId} />
