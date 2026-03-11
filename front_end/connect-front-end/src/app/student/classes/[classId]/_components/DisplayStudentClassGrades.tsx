@@ -19,16 +19,16 @@ const DisplayStudentClassGrades: FC<DisplayStudentClassGradesProps> = ({
     return `/student/classes/${classId}/tests/${testId}/submit`;
   };
   const TestResult = (studentGrade: StudentGrade) => {
+    if (studentGrade.isSubmitted || studentGrade.manualInterventionRequired) {
+      return <div>Grading in-progress</div>;
+    }
+
     if (studentGrade.isGraded) {
       return (
         <Link href={createStudentSubmissionViewUrl(studentGrade.testId)}>
           {studentGrade.testGrade.toFixed(2)}%
         </Link>
       );
-    }
-
-    if (studentGrade.isSubmitted || studentGrade.manualInterventionRequired) {
-      return <div>Grading in-progress</div>;
     }
 
     return (
