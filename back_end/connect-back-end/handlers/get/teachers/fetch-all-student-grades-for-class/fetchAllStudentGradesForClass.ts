@@ -23,7 +23,7 @@ type FetchAllStudentGradesForClassResponse = {
 };
 
 export default function fetchAllStudentGradesForClass(
-  databaseClient: PrismaClient
+  databaseClient: PrismaClient,
 ) {
   const successMessage =
     "successfully queried all student grades for specific class";
@@ -43,7 +43,7 @@ export default function fetchAllStudentGradesForClass(
         StatusCodes.OK,
         successMessage,
         studentGradesForClass,
-        res
+        res,
       );
     } catch (error) {
       logger.error({ classId: classId, err: error }, errorMessage);
@@ -55,7 +55,7 @@ export default function fetchAllStudentGradesForClass(
 
 async function fetchAllStudentGradesForClassQuery(
   databaseClient: PrismaClient,
-  classId: string
+  classId: string,
 ) {
   const allStudentGrades = await databaseClient.studentTestResults.findMany({
     where: {
@@ -87,6 +87,7 @@ async function fetchAllStudentGradesForClassQuery(
       },
       testGrade: true,
       manualInterventionRequired: true,
+      isGraded: true,
     },
     orderBy: {
       test: {
@@ -120,7 +121,7 @@ async function fetchAllStudentGradesForClassQuery(
         manualInterventionRequired: value.manualInterventionRequired,
         viewAnswerKeyUrl: await testClassIdToAnswerKeyUrl.get(testClassIdKey),
       };
-    })
+    }),
   );
 }
 
@@ -128,7 +129,7 @@ function createResponse(
   statusCode: number,
   message: string,
   data: PromiseSettledResult<StudentGrades>[],
-  res: Response
+  res: Response,
 ) {
   const response: FetchAllStudentGradesForClassResponse = {
     statusCode,
