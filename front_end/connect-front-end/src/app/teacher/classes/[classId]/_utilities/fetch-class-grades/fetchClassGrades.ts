@@ -10,6 +10,7 @@ export type ClassGrades = {
   testGrade: number;
   viewAnswerKeyUrl: string;
   manualInterventionRequired: boolean;
+  isGraded: boolean;
 };
 
 type FetchStudentGrades = {
@@ -21,12 +22,12 @@ type FetchStudentGrades = {
 export async function fetchClassGrades(classId: string) {
   const serverUrl = getServerUrl();
   const fetchedClassGrades = await fetch(
-    serverUrl + `/teacher/classes/${classId}/grades`
+    serverUrl + `/teacher/classes/${classId}/grades`,
   );
 
   if (!fetchedClassGrades.ok) {
     throw Error(
-      `unable to fetch class, please try again: ${fetchedClassGrades.statusText}`
+      `unable to fetch class, please try again: ${fetchedClassGrades.statusText}`,
     );
   }
 

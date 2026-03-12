@@ -3,6 +3,7 @@ import { ClassGrades } from "./fetchClassGrades";
 type TestGrade = {
   grade: number;
   manualInterventionRequired: boolean;
+  isGraded: boolean;
 };
 
 type Students = {
@@ -54,6 +55,7 @@ export function groupGradesByStudent(classGrades: ClassGrades[]) {
       studentIdToStudents.get(grade.studentId)?.testGrades.push({
         grade: grade.testGrade,
         manualInterventionRequired: grade.manualInterventionRequired,
+        isGraded: grade.isGraded,
       });
     }
   }

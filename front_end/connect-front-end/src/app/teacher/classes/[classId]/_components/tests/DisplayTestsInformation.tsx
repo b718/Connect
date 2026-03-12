@@ -10,7 +10,6 @@ interface DisplayTestsInformationProps {
 const DisplayTestsInformation: FC<DisplayTestsInformationProps> = ({
   tests,
 }) => {
-  console.log(tests);
   return (
     <table className={styles.DisplayInformationTable}>
       <thead>
