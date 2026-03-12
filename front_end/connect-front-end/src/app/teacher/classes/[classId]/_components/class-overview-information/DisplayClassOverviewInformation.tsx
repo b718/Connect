@@ -61,7 +61,7 @@ const DisplayClassOverviewInformation: FC<DisplayOverviewInformationProps> = ({
                       classGrades.tests[index].testId,
                     )}
                   >
-                    {testGrade.isGraded ? testGrade.grade.toFixed(2) : "Grading in-progress"}%
+                    {testGrade.isGraded ? `${testGrade.grade.toFixed(2)}%` : "Grading in-progress"}
                   </Link>
                   {testGrade.manualInterventionRequired && (
                     <div className={styles.StudentGradeCellToolTipContainer}>

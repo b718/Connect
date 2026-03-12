@@ -14,6 +14,7 @@ type StudentGrades = {
   testCreationDate: Date;
   viewAnswerKeyUrl: string | undefined;
   manualInterventionRequired: boolean;
+  isGraded: boolean;
 };
 
 type FetchAllStudentGradesForClassResponse = {
@@ -119,6 +120,7 @@ async function fetchAllStudentGradesForClassQuery(
         testCreationDate: value.test.createdAt,
         testGrade: value.testGrade,
         manualInterventionRequired: value.manualInterventionRequired,
+        isGraded: value.isGraded,
         viewAnswerKeyUrl: await testClassIdToAnswerKeyUrl.get(testClassIdKey),
       };
     }),
