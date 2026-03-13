@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import fetchAnswerKeyUrl from "./fetchAnswerKeyUrl";
+import fetchAnswerKeyUrl from "../../shared/fetch-answer-key-url/fetchAnswerKeyUrl";
 import pino from "pino";
 
 type StudentGrades = {

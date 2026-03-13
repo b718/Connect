@@ -7,6 +7,7 @@ import fetchAllStudentGradesForClass from "../../../handlers/get/teachers/fetch-
 import patchStudentSubmissionGrade from "../../../handlers/patch/teachers/patch-student-submission-grade/patchStudentSubmissionGrade";
 import fetchClasses from "../../../handlers/get/teachers/fetch-classes/fetchClasses";
 import fetchStudentSubmissionGrade from "../../../handlers/get/teachers/fetch-student-submission-grade/fetchStudentSubmissionGrade";
+import fetchTests from "../../../handlers/get/teachers/fetch-tests/fetchTests";
 
 export default function teacherRouter(databaseClient: PrismaClient) {
   const router = Router();
@@ -22,6 +23,7 @@ export default function teacherRouter(databaseClient: PrismaClient) {
     "/students/:studentId/tests/:testId/submissions",
     fetchStudentSubmissionGrade(databaseClient),
   );
+  router.get("/classes/:classId/tests", fetchTests(databaseClient));
 
   // post handlers
   router.post("/classes/create", createNewClass(databaseClient));
