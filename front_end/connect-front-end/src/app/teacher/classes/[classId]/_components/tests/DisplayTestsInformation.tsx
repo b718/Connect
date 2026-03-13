@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Tests } from "../../_utilities/fetch-class-grades/groupGradesByStudent";
+import { Tests } from "../../_utilities/fetch-tests/fetchTests";
 import styles from "../../page.module.css";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ const DisplayTestsInformation: FC<DisplayTestsInformationProps> = ({
           <tr key={test.testId}>
             <td>{test.testName}</td>
             <td>
-              <Link href={test.viewAnswerKeyUrl} target={"_blank"}>
+              <Link href={test.answerKeyUrl} target={"_blank"}>
                 View Test
               </Link>
             </td>

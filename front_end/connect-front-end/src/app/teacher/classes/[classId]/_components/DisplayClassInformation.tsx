@@ -15,6 +15,7 @@ import DisplayClassTab from "./class-information-tabs/DisplayClassTab";
 import { fetchClassGrades } from "../_utilities/fetch-class-grades/fetchClassGrades";
 import { CategorizedClassGrades } from "../_utilities/fetch-class-grades/groupGradesByStudent";
 import DisplayTestsInformation from "./tests/DisplayTestsInformation";
+import { fetchTests, Tests } from "../_utilities/fetch-tests/fetchTests";
 
 export type Tab = "Students" | "Teachers" | "Overview" | "Tests" | "Create Test";
 
@@ -23,14 +24,16 @@ const DisplayClassInformation = () => {
   const classId = params.classId as string;
   const [classInformation, setClassInformation] = useState<ClassInformation>();
   const [classGrades, setClassGrades] = useState<CategorizedClassGrades>();
+  const [tests, setTests] = useState<Tests[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    Promise.all([fetchClass(classId), fetchClassGrades(classId)])
-      .then(([classInformation, grades]) => {
+    Promise.all([fetchClass(classId), fetchClassGrades(classId), fetchTests(classId)])
+      .then(([classInformation, grades, tests]) => {
         setClassInformation(classInformation);
         setClassGrades(grades);
+        setTests(tests);
       })
       .catch((error) => setError(error));
   }, [classId]);
@@ -102,7 +105,7 @@ const DisplayClassInformation = () => {
           <DisplayTeachersInformation teachers={classInformation.teachers} />
         )}
         {activeTab === "Tests" && (
-          <DisplayTestsInformation tests={classGrades.tests} />
+          <DisplayTestsInformation tests={tests} />
         )}
         {activeTab === "Create Test" && (
           <DisplayCreateTestInformation classId={classId} />
