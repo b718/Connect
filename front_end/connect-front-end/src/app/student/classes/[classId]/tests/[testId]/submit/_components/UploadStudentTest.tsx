@@ -117,7 +117,9 @@ const UploadStudentTest = () => {
           {"Back"}
         </button>
         {uploadStudentSubmissionUrl?.length > 0 ? (
-          <div>Submission submitted succesfully</div>
+          <div className={styles.DisplayStudentSubmissionContainer}>
+            Submission submitted succesfully
+          </div>
         ) : (
           <div className={styles.DisplayStudentSubmissionContainer}>
             <DisplayStudentSubmission
