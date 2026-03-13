@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../page.module.css";
 import {
@@ -8,10 +8,12 @@ import {
   fetchTeacherClasses,
 } from "../_utilites/fetch-teacher-classes/fetchTeacherClasses";
 import { useAuth } from "@clerk/nextjs";
+import { UserIdContext } from "@/app/_shared/user-id/UserIdContext";
 
 const DisplayTeacherClasses = () => {
   const router = useRouter();
   const { getToken } = useAuth();
+  const { userIdLocalStorageKey } = useContext(UserIdContext);
   const [classes, setClasses] = useState<Class[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error>();
@@ -23,7 +25,7 @@ const DisplayTeacherClasses = () => {
   };
 
   useEffect(() => {
-    fetchTeacherClasses(getToken)
+    fetchTeacherClasses(getToken, userIdLocalStorageKey)
       .then((data) => setClasses(data))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));

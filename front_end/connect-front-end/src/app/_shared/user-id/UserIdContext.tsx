@@ -13,6 +13,7 @@ import styles from "./UserIdContext.module.css";
 
 interface UserIdContextType {
   userId: string;
+  userIdLocalStorageKey: string;
 }
 
 interface UserIdContextProps {
@@ -21,15 +22,18 @@ interface UserIdContextProps {
 
 export const UserIdContext = createContext<UserIdContextType>({
   userId: "",
+  userIdLocalStorageKey: "",
 });
 
 export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
   const { getToken, isLoaded, userId: clerkUserId } = useAuth();
   const [userId, setUserId] = useState<string>("");
+  const [userIdLocalStorageKey, setUserIdLocalStorageKey] = useState<string>("");
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState<boolean>(true);
   const userIdContextValue: UserIdContextType = {
     userId: userId,
+    userIdLocalStorageKey: userIdLocalStorageKey,
   };
 
   useEffect(() => {
@@ -41,6 +45,7 @@ export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
     const cachedUserId = localStorage.getItem(cacheKey);
     if (cachedUserId) {
       setUserId(cachedUserId);
+      setUserIdLocalStorageKey(cacheKey);
       setLoading(false);
       return;
     }
@@ -48,6 +53,7 @@ export const UserIdContextProvider: FC<UserIdContextProps> = ({ children }) => {
     getUserId(getToken)
       .then((newUserId) => {
         setUserId(newUserId);
+        setUserIdLocalStorageKey(cacheKey);
         localStorage.setItem(cacheKey, newUserId);
       })
       .catch((error) => setError(error))

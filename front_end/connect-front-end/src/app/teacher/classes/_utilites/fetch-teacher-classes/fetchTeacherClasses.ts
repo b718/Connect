@@ -15,10 +15,10 @@ type FetchClassesResponse = {
   data: Class[];
 };
 
-export async function fetchTeacherClasses(getToken: GetToken) {
+export async function fetchTeacherClasses(getToken: GetToken, userIdLocalStorageKey: string) {
   const token = await getToken();
   const serverUrl = getServerUrl();
-  const userId = localStorage.getItem("connect_userId");
+  const userId = localStorage.getItem(userIdLocalStorageKey);
   const classes = await fetch(
     serverUrl + `/teacher/classes/teacher/${userId}`,
     {
