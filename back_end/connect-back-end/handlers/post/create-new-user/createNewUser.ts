@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import pino from "pino";
 
-const teacherEmailAddresses = [""];
+const teacherEmailAddresses = ["bryanzhao718@gmail.com"];
 
 type AuthenticateUserResponse = {
   statusCode: number;
@@ -25,7 +25,7 @@ export default function createNewUser(databaseClient: PrismaClient) {
           StatusCodes.UNAUTHORIZED,
           errorMessage,
           null,
-          res
+          res,
         );
       }
 
@@ -39,7 +39,7 @@ export default function createNewUser(databaseClient: PrismaClient) {
 
       logger.info(
         { firstName: user.firstName, lastName: user.lastName, role: userRole },
-        successMessage
+        successMessage,
       );
 
       createResponse(StatusCodes.OK, successMessage, userRole.id, res);
@@ -50,7 +50,7 @@ export default function createNewUser(databaseClient: PrismaClient) {
         StatusCodes.INTERNAL_SERVER_ERROR,
         errorMessage,
         null,
-        res
+        res,
       );
     }
   };
@@ -60,7 +60,7 @@ function createResponse(
   statusCode: number,
   message: string,
   userId: string | null,
-  res: Response
+  res: Response,
 ) {
   const response: AuthenticateUserResponse = {
     statusCode,
@@ -108,7 +108,7 @@ function isUserTeacher(emailAddress: string) {
 async function createNewStudent(
   databaseClient: PrismaClient,
   user: User,
-  userRole: Role
+  userRole: Role,
 ) {
   const studentData = {
     firstName: user.firstName ?? "",
@@ -130,7 +130,7 @@ async function createNewStudent(
 async function createNewTeacher(
   databaseClient: PrismaClient,
   user: User,
-  userRole: Role
+  userRole: Role,
 ) {
   const teacherData = {
     firstName: user.firstName ?? "",
