@@ -1,9 +1,20 @@
-/* Sidebar Section, 1/6 in width */
+/* Sidebar Section */
 .SidebarContainer {
   display: flex;
   flex-direction: column;
   height: 100vh;
   max-height: 100vh;
+  transition:
+    width 0.2s ease-in-out,
+    max-width 0.2s ease-in-out;
+}
+
+.SidebarContainerCollapsed {
+  width: 60px;
+  max-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
 }
 
 .SidebarInnerContainer {
@@ -11,18 +22,29 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-
   background-color: #fcfcfc;
+  transition:
+    width 0.2s ease-in-out,
+    max-width 0.2s ease-in-out,
+    padding 0.2s ease-in-out;
 }
 
-.SidebarBurgerMenu {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+.SidebarInnerContainerCollapsed {
+  width: 60px;
+  max-width: 60px;
+  padding: 1rem 0.5rem;
+}
 
-  padding-top: 0.5rem;
-  margin-left: 95vw;
+/* Sidebar Header — contains "Home" label + chevron toggle */
+.SidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.SidebarHeaderCollapsed {
+  justify-content: center;
 }
 
 .SidebarSectionSeperatorText {
@@ -30,16 +52,88 @@
   opacity: 0.5;
 }
 
+/* Toggle Button */
+.ToggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  color: inherit;
+}
+
+.ToggleButton:hover {
+  opacity: 1;
+}
+
+/* Mobile Burger Menu */
+.SidebarBurgerMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 101;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+/* Mobile Overlay */
+.SidebarOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.SidebarOverlayVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile Sidebar Panel */
+.MobileSidebarPanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: #fcfcfc;
+  z-index: 100;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.MobileSidebarPanelOpen {
+  transform: translateX(0);
+}
+
 /* SidebarRow Section */
 .SidebarRowContainer {
   display: grid;
   grid-template-columns: 20% 80%;
-
   cursor: pointer;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border-radius: 8px;
   padding: 0.75rem 1rem;
-
   width: 85%;
 }
 
@@ -47,15 +141,25 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+.SidebarRowContainerCollapsed {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  width: auto;
+  padding: 0.75rem;
+}
+
 .SidebarRowIcon {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: 20px;
   height: 20px;
   padding-right: 1rem;
+}
+
+.SidebarRowContainerCollapsed .SidebarRowIcon {
+  padding-right: 0;
 }
 
 .SidebarRowText {
@@ -63,25 +167,8 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-
   font-weight: 500;
   text-transform: capitalize;
-}
-
-@media (min-width: 400px) {
-  .SidebarSectionSeperatorText {
-    margin-left: 0.5rem;
-  }
-
-  .SidebarContainer {
-    position: absolute;
-  }
-
-  .SidebarInnerContainer {
-    gap: 0.5rem;
-    width: 100vw;
-    height: 100vh;
-  }
 }
 
 @media (min-width: 600px) {
@@ -95,13 +182,24 @@
     position: static;
   }
 
+  .SidebarContainerCollapsed {
+    width: 60px;
+    max-width: 60px;
+  }
+
   .SidebarInnerContainer {
     padding: 1rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
     gap: 0.5rem;
-
     width: 250px;
     max-width: 250px;
+  }
+
+  .SidebarInnerContainerCollapsed {
+    width: 60px;
+    max-width: 60px;
+    padding: 1rem 0.5rem;
+    align-items: center;
   }
 }

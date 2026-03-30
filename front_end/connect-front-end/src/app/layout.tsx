@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
+import { SidebarContextProvider } from "./_shared/side-bar/SidebarContext";
 import { UserIdContextProvider } from "./_shared/user-id/UserIdContext";
 import "./globals.css";
 
@@ -24,7 +25,9 @@ export default function RootLayout({
     >
       <html lang="en">
         <body>
-          <UserIdContextProvider>{children}</UserIdContextProvider>
+          <SidebarContextProvider>
+            <UserIdContextProvider>{children}</UserIdContextProvider>
+          </SidebarContextProvider>
         </body>
       </html>
     </ClerkProvider>
